@@ -3,10 +3,12 @@ import bonus1Img from '../imagens/12_QUESTOES_DE_LITERATURA_E_INTERPRETACAO.png'
 import bonus2Img from '../imagens/13_MAPAS_MENTAIS_DAS_ESCOLAS_LITERARIAS.png';
 import bonus3Img from '../imagens/14_DINAMICAS_DE_REDACAO_E_EXPRESSAO_ORAL.png';
 import bonus4Img from '../imagens/15_GUIA_DE_PLANEJAMENTO_ALINHADO_A_BNCC.png';
+import { getSiteImage } from '../utils/imageStorage';
 
 export const BonusesSection: React.FC = () => {
   const bonuses = [
     {
+      id: 'bonus_1',
       badge: 'BÔNUS 1',
       title: '600 Questões de Literatura e Interpretação',
       desc: 'Prontas para imprimir e aplicar, com gabarito. Para qualquer turma do Ensino Médio.',
@@ -14,6 +16,7 @@ export const BonusesSection: React.FC = () => {
       image: bonus1Img,
     },
     {
+      id: 'bonus_2',
       badge: 'BÔNUS 2',
       title: '150 Mapas Mentais das Escolas Literárias',
       desc: 'Autores, correntes e conceitos organizados para revisão rápida e visual.',
@@ -21,6 +24,7 @@ export const BonusesSection: React.FC = () => {
       image: bonus2Img,
     },
     {
+      id: 'bonus_3',
       badge: 'BÔNUS 3',
       title: '100 Dinâmicas de Redação e Expressão Oral',
       desc: 'Fichas ilustradas com objetivo, passo a passo e propostas práticas para animar qualquer aula.',
@@ -28,6 +32,7 @@ export const BonusesSection: React.FC = () => {
       image: bonus3Img,
     },
     {
+      id: 'bonus_4',
       badge: 'BÔNUS 4',
       title: 'Guia de Planejamento alinhado à BNCC',
       desc: 'O ano letivo organizado por bimestre, pronto para entregar à coordenação.',
@@ -37,8 +42,8 @@ export const BonusesSection: React.FC = () => {
   ];
 
   return (
-    <section className="bg-[#4A2819] text-[#FFF0D1] py-16 px-4 sm:px-6 lg:px-8 text-center border-b border-[#2B160F]">
-      <div className="max-w-4xl mx-auto">
+    <section className="section bg-[#4A2819] text-[#FFF0D1] py-20 px-4 sm:px-6 lg:px-8 text-center relative overflow-hidden">
+      <div className="max-w-4xl mx-auto relative z-10">
         {/* Eyebrow (Dourado Envelhecido) */}
         <p className="hand text-2xl sm:text-3xl text-[#C99A45] mb-1 font-bold">
           4 bônus inclusos no Pacote Completo
@@ -70,46 +75,46 @@ export const BonusesSection: React.FC = () => {
           grátis hoje
         </div>
 
-        {/* 4 Bonus Cards Grid (Cards Bege Pergaminho #F0D9AE com Imagem Completa e Texto #21140F) */}
+        {/* 4 Bonus Cards Grid com 3D Tilt Glare */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-left">
-          {bonuses.map((bonus, idx) => (
-            <div
-              key={idx}
-              className="bg-[#F0D9AE] border-2 border-[#C99A45]/40 rounded-2xl overflow-hidden flex flex-col justify-between shadow-xl text-[#21140F] group hover:border-[#C99A45] transition-all"
-            >
-              <div>
-                {/* Full, uncropped image container */}
-                <div className="w-full bg-[#FFF0D1] border-b-2 border-[#C99A45]/30 p-3 sm:p-4 flex items-center justify-center overflow-hidden">
-                  <img
-                    src={bonus.image}
-                    alt={bonus.title}
-                    className="w-full h-auto max-h-[300px] object-contain rounded-lg shadow-sm transition-transform duration-300 group-hover:scale-[1.02]"
-                  />
-                </div>
+          {bonuses.map((bonus) => {
+            const imgSrc = getSiteImage(bonus.id, bonus.image);
+            return (
+              <div
+                key={bonus.id}
+                className="bg-[#F0D9AE] border-2 border-[#C99A45]/40 rounded-2xl overflow-hidden flex flex-col justify-between shadow-xl text-[#21140F] group hover:border-[#C99A45] transition-all tilt relative"
+              >
+                <div>
+                  {/* Clean Image Container */}
+                  <div className="w-full bg-[#FFF0D1] border-b-2 border-[#C99A45]/30 p-3 sm:p-4 flex items-center justify-center overflow-hidden">
+                    <img
+                      src={imgSrc}
+                      alt={bonus.title}
+                      className="w-full h-auto max-h-[300px] object-contain rounded-lg shadow-sm transition-transform duration-300 group-hover:scale-[1.02]"
+                    />
+                  </div>
 
-                <div className="p-5">
-                  <span className="inline-block bg-[#692E24] text-[#FFF0D1] text-[11px] font-extrabold tracking-wider uppercase px-2.5 py-1 rounded-full mb-3">
-                    {bonus.badge}
-                  </span>
+                  <div className="p-5">
+                    <span className="inline-block bg-[#692E24] text-[#FFF0D1] text-[11px] font-extrabold tracking-wider uppercase px-2.5 py-1 rounded-full mb-3">
+                      {bonus.badge}
+                    </span>
+                    <h3 className="font-serif-display font-black text-lg sm:text-xl text-[#21140F] mb-2 leading-tight">
+                      {bonus.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[#4A2819] font-medium leading-relaxed mb-4">
+                      {bonus.desc}
+                    </p>
 
-                  <h3 className="font-serif-display font-black text-lg sm:text-xl text-[#21140F] mb-2 leading-tight">
-                    {bonus.title}
-                  </h3>
-
-                  <p className="text-xs sm:text-sm text-[#4A2819] font-medium leading-relaxed mb-4">
-                    {bonus.desc}
-                  </p>
-
-                  <div className="flex items-baseline gap-2 pt-2 border-t border-[#21140F]/15 text-sm">
-                    <s className="text-[#8C6A54]">{bonus.originalPrice}</s>
-                    <b className="text-[#692E24] font-serif-display text-lg">Grátis</b>
+                    <div className="flex items-baseline gap-2 pt-2 border-t border-[#21140F]/15 text-sm">
+                      <s className="text-[#8C6A54]">{bonus.originalPrice}</s>
+                      <b className="text-[#692E24] font-serif-display text-lg">Grátis</b>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
-
       </div>
     </section>
   );

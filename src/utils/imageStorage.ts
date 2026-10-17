@@ -1,74 +1,53 @@
-// Helper for finding uploaded or imported images
-// Supports Vite dynamic glob imports across all relevant image folders
+// Central image storage & upload utility for site-wide editable images
+// Supports LocalStorage persistence, server-side persistence (/api/upload-image), and clipboard/drag-drop
 
-const allModules = import.meta.glob([
-  '/src/imagens/*.{png,jpg,jpeg,webp,PNG,JPG,JPEG,WEBP}',
-  '/src/images/*.{png,jpg,jpeg,webp,PNG,JPG,JPEG,WEBP}',
-  '/src/amostras/*.{png,jpg,jpeg,webp,PNG,JPG,JPEG,WEBP}',
-  '/src/bonus/*.{png,jpg,jpeg,webp,PNG,JPG,JPEG,WEBP}',
-  '/CAFE_LITERARIO_AMOSTRAS_COMPLETAS/**/*.{png,jpg,jpeg,webp,PNG,JPG,JPEG,WEBP}',
-], {
-  eager: true,
-  import: 'default',
-}) as Record<string, string>;
-
-export function getAmostraImage(id: string, filePrefix: string): string | null {
-  // 1. LocalStorage
-  if (typeof window !== 'undefined') {
-    const saved = localStorage.getItem(`amostra_${id}`);
-    if (saved) return saved;
-  }
-
-  // 2. Check glob modules
-  const prefixLower = filePrefix.toLowerCase();
-  const idLower = id.toLowerCase();
-  for (const [path, url] of Object.entries(allModules)) {
-    const filename = path.split('/').pop()?.toLowerCase() || '';
-    if (filename.includes(prefixLower) || (filename.startsWith(idLower + '_') || filename.startsWith(idLower + '-'))) {
-      return url;
-    }
-  }
-
-  // 3. Fallbacks to public directories
-  return `/imagens/${filePrefix}.png`;
-}
-
-export function getBonusImage(id: string, filePrefix: string): string | null {
-  // 1. LocalStorage
-  if (typeof window !== 'undefined') {
-    const saved = localStorage.getItem(`bonus_${id}`);
-    if (saved) return saved;
-  }
-
-  // 2. Check glob modules
-  const prefixLower = filePrefix.toLowerCase();
-  for (const [path, url] of Object.entries(allModules)) {
-    const filename = path.split('/').pop()?.toLowerCase() || '';
-    if (filename.includes(prefixLower)) {
-      return url;
-    }
-  }
-
-  // 3. Fallbacks
-  return `/imagens/${filePrefix}.png`;
-}
-
-export function saveAmostraImage(id: string, dataUrl: string) {
+export function getSiteImage(key: string, defaultSrc: string): string {
   if (typeof window !== 'undefined') {
     try {
-      localStorage.setItem(`amostra_${id}`, dataUrl);
-    } catch {
-      // ignore
-    }
+      const saved = localStorage.getItem(`site_img_${key}`);
+      if (saved) return saved;
+    } catch {}
+  }
+  return defaultSrc;
+}
+
+export function saveSiteImage(key: string, filename: string, dataUrl: string) {
+  if (typeof window !== 'undefined') {
+    try {
+      localStorage.setItem(`site_img_${key}`, dataUrl);
+      // Also save with specific legacy keys if needed
+      localStorage.setItem(`amostra_${key}`, dataUrl);
+      localStorage.setItem(`bonus_${key}`, dataUrl);
+      localStorage.setItem(`depoimento_${key}`, dataUrl);
+    } catch {}
+
+    // Dispatch custom event for instant UI sync & toast notification
+    window.dispatchEvent(
+      new CustomEvent('site-image-updated', {
+        detail: { key, filename, dataUrl },
+      })
+    );
+
+    // Save to server in background
+    fetch('/api/upload-image', {
+      method: 'POST',
+      headers: {
+        'x-filename': encodeURIComponent(filename),
+      },
+      body: dataUrl,
+    }).catch(() => {});
   }
 }
 
-export function saveBonusImage(id: string, dataUrl: string) {
-  if (typeof window !== 'undefined') {
-    try {
-      localStorage.setItem(`bonus_${id}`, dataUrl);
-    } catch {
-      // ignore
-    }
-  }
+export function readFileAsDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const res = e.target?.result as string;
+      if (res) resolve(res);
+      else reject(new Error('Falha ao ler arquivo'));
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 }

@@ -3,16 +3,33 @@
 :root {
   /* Paleta Oficial Café Literário Vintage Premium */
   --bg-primary: #2B160F;       /* Marrom escuro fundo principal */
-  --bg-secondary: #4A2819;     /* Marrom espresso seções secundárias */
+  --bg-secondary: #4A2819;     /* Marrom espresso */
+  --bg-darkest: #1C100B;       /* Quase preto para rodapé */
   --card-parchment: #F0D9AE;   /* Bege pergaminho nos cards */
   --cream-vintage: #FFF0D1;    /* Creme vintage em áreas claras */
+  --parchment-light: #F5E6CC;  /* Fundo claro pergaminho */
   --gold-aged: #C99A45;        /* Dourado envelhecido botões/destaques */
   --gold-deep: #8F6822;        /* Sombra 3D botões */
   --wine-classic: #692E24;     /* Vinho clássico em detalhes */
   --wine-deep: #441A13;        /* Vinho escuro */
   --text-dark: #21140F;        /* Marrom quase preto sobre fundos claros */
   --text-light: #FFF0D1;       /* Creme vintage sobre fundos escuros */
-  --text-muted: #8C6A54;       /* Texto secundário elegante */
+  --text-muted: #8C6A54;       /* Texto secundário */
+
+  /* Mapeamento para os efeitos */
+  --espresso: #21140F;
+  --roast: #2B160F;
+  --roast-deep: #1C100B;
+  --latte: #F5E6CC;
+  --milk: #FFF0D1;
+  --caramel: #C99A45;
+  --caramel-deep: #8F6822;
+  --awning: #692E24;
+  --awning-deep: #441A13;
+  --cherry: #692E24;
+  --cherry-deep: #441A13;
+  --chalk: #F3EFE4;
+  --muted: #8C6A54;
 }
 
 * {
@@ -20,23 +37,30 @@
 }
 
 html {
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
   scroll-behavior: smooth;
 }
 
 body {
   font-family: 'Figtree', system-ui, -apple-system, sans-serif !important;
-  background-color: var(--bg-primary);
   color: var(--text-light);
-  line-height: 1.55;
-  -webkit-font-smoothing: antialiased;
+  background: var(--bg-primary);
   overflow-x: hidden;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
 }
 
 h1, h2, h3, h4, h5, h6, .font-serif-display {
   font-family: 'Fraunces', Georgia, serif !important;
   font-weight: 900 !important;
-  line-height: 1.08;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
+  line-height: 1.12;
 }
 
 .hand, .font-script {
@@ -44,65 +68,98 @@ h1, h2, h3, h4, h5, h6, .font-serif-display {
   font-weight: 700 !important;
 }
 
-/* ---------- Botão de Alta Conversão Dourado Envelhecido ---------- */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background: var(--gold-aged);
-  color: var(--text-dark);
-  font-weight: 800;
-  font-size: 18px;
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  padding: 18px 36px;
-  border-radius: 999px;
-  box-shadow: 0 6px 0 var(--gold-deep), 0 14px 28px rgba(0, 0, 0, 0.35);
-  transition: transform 0.15s, box-shadow 0.15s;
-  border: 0;
-  cursor: pointer;
-  text-align: center;
-}
-
-.btn-primary:hover {
-  transform: translateY(2px);
-  box-shadow: 0 4px 0 var(--gold-deep), 0 10px 20px rgba(0, 0, 0, 0.35);
-}
-
-.btn-primary:active {
-  transform: translateY(4px);
-  box-shadow: 0 2px 0 var(--gold-deep);
-}
-
-.btn-secondary {
+/* ---------- Botões com Alta Conversão e Paleta Dourada / Vinho ---------- */
+.btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: transparent;
-  color: var(--text-dark);
-  border: 2px solid var(--text-dark);
+  width: 100%;
+  padding: 18px 28px;
+  font-family: 'Figtree', sans-serif;
   font-weight: 800;
-  font-size: 15px;
-  text-transform: uppercase;
-  padding: 14px 24px;
+  font-size: 16px;
+  letter-spacing: .01em;
   border-radius: 999px;
+  border: 0;
   cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.btn-secondary:hover {
-  background: var(--text-dark);
-  color: var(--cream-vintage);
-}
-
-/* ---------- Toldo Vintage Clássico (Vinho e Creme) ---------- */
-.awning {
-  height: 42px;
-  background: repeating-linear-gradient(90deg, var(--wine-classic) 0 50px, var(--cream-vintage) 50px 100px);
   position: relative;
+  text-align: center;
+  line-height: 1.3;
+  transform: translateY(0);
+  transition: transform .08s ease, box-shadow .08s ease;
+  overflow: hidden;
+}
+
+/* Botão Principal Dourado Envelhecido com Varredura de Brilho */
+.btn-primary, .btn-cherry {
+  background: linear-gradient(180deg, #D4A753, var(--gold-aged));
+  color: #21140F;
+  box-shadow: 0 7px 0 var(--gold-deep), 0 14px 26px rgba(0, 0, 0, .45), inset 0 2px 0 rgba(255, 255, 255, .35);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.btn-primary:active, .btn-cherry:active {
+  transform: translateY(5px);
+  box-shadow: 0 2px 0 var(--gold-deep), 0 5px 10px rgba(0, 0, 0, .3), inset 0 2px 0 rgba(255, 255, 255, .2);
+}
+
+.btn-primary::after, .btn-cherry::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  left: -80px;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .5), transparent);
+  transform: skewX(-20deg);
+  animation: shine 3.4s 2s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0% { left: -80px; }
+  35%, 100% { left: calc(100% + 40px); }
+}
+
+/* Botão Secundário Vinho Clássico */
+.btn-wine {
+  background: linear-gradient(180deg, #7D382B, var(--wine-classic));
+  color: #FFF0D1;
+  box-shadow: 0 7px 0 var(--wine-deep), 0 14px 24px rgba(0, 0, 0, .35), inset 0 2px 0 rgba(255, 255, 255, .2);
+}
+
+.btn-wine:active {
+  transform: translateY(5px);
+  box-shadow: 0 2px 0 var(--wine-deep);
+}
+
+/* Botão Creme Pergaminho */
+.btn-milk, .btn-secondary {
+  background: linear-gradient(180deg, #FFFFFF, var(--cream-vintage));
+  color: var(--text-dark);
+  box-shadow: 0 7px 0 #C99A45, 0 14px 24px rgba(0, 0, 0, .25), inset 0 2px 0 #FFFFFF;
+}
+
+.btn-milk:active, .btn-secondary:active {
+  transform: translateY(5px);
+  box-shadow: 0 2px 0 #C99A45, 0 5px 10px rgba(0, 0, 0, .2);
+}
+
+@media (min-width: 520px) {
+  .btn, .btn-primary, .btn-wine, .btn-milk {
+    width: auto;
+    min-width: 320px;
+  }
+}
+
+/* ---------- Awning Italiano Listrado em Vinho Clássico & Creme ---------- */
+.awning {
+  height: 54px;
+  margin: 0 -20px 32px;
+  position: relative;
+  background: repeating-linear-gradient(90deg, #692E24 0 46px, #FFF0D1 46px 92px);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, .35);
 }
 
 .awning::after {
@@ -110,38 +167,818 @@ h1, h2, h3, h4, h5, h6, .font-serif-display {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -14px;
-  height: 14px;
-  background: radial-gradient(circle at 25px 0, var(--wine-classic) 24px, transparent 25px) 0 0/100px 14px repeat-x,
-              radial-gradient(circle at 75px 0, var(--cream-vintage) 24px, transparent 25px) 0 0/100px 14px repeat-x;
-  z-index: 10;
+  bottom: -18px;
+  height: 18px;
+  background: radial-gradient(circle at 23px 0, #692E24 22px, transparent 23px) 0 0/92px 18px repeat-x,
+              radial-gradient(circle at 69px 0, #FFF0D1 22px, transparent 23px) 0 0/92px 18px repeat-x;
+  filter: drop-shadow(0 6px 5px rgba(0, 0, 0, .3));
 }
 
-/* Marquee animado */
+/* ---------- Animação do Título Palavra por Palavra ---------- */
+.hero h1 .w {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(24px) rotateX(-60deg);
+  transform-origin: 50% 100%;
+  animation: wordUp .7s cubic-bezier(.2, .8, .2, 1) forwards;
+  animation-delay: calc(.08s * var(--i));
+}
+
+@keyframes wordUp {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Grãos de Café Flutuando no Hero ---------- */
+.beans {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.bean {
+  position: absolute;
+  width: 16px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 35% 30%, #8B5A36, #4A2A18 60%, #2A170E);
+  opacity: .55;
+  animation: beanDrift linear infinite;
+}
+
+.bean::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 14%;
+  bottom: 14%;
+  width: 2px;
+  border-radius: 2px;
+  background: #1C0F09;
+  transform: translateX(-50%) rotate(10deg);
+}
+
+@keyframes beanDrift {
+  0% { transform: translateY(40px) rotate(0); opacity: 0; }
+  15% { opacity: .55; }
+  85% { opacity: .55; }
+  100% { transform: translateY(-460px) rotate(340deg); opacity: 0; }
+}
+
+/* ---------- Mockup Scene 3D com Parallax ---------- */
+.mock-scene {
+  position: relative;
+  max-width: 540px;
+  margin: 6px auto 34px;
+  perspective: 1200px;
+  touch-action: pan-y;
+}
+
+.mock-glow {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 10%;
+  bottom: 6%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201, 154, 69, .4), rgba(201, 154, 69, 0) 65%);
+  filter: blur(12px);
+  animation: glow 5s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% { opacity: .7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+
+.mock-stack {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+  transform: rotateX(calc(10deg + var(--rx, 0deg))) rotateY(var(--ry, 0deg));
+  transition: transform .25s ease-out;
+}
+
+.mock-product {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 26px 30px rgba(0, 0, 0, .55));
+  transform-origin: 50% 80%;
+  animation: productIn 1.2s .2s cubic-bezier(.2, .8, .2, 1) forwards, productFloat 6s 1.6s ease-in-out infinite;
+}
+
+@keyframes productIn {
+  from { opacity: 0; transform: translateY(60px) rotateX(35deg) scale(.82); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes productFloat {
+  0%, 100% { opacity: 1; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-10px); }
+}
+
+.mock-shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, .4) 50%, transparent 65%) -200% 0/300% 100% no-repeat;
+  animation: sheen 5s 2.2s ease-in-out infinite;
+}
+
+@keyframes sheen {
+  0% { background-position: -200% 0; }
+  40%, 100% { background-position: 200% 0; }
+}
+
+.mock-tag {
+  position: absolute;
+  top: 2px;
+  right: 0;
+  z-index: 6;
+  background: var(--gold-aged);
+  color: var(--text-dark);
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  font-size: 19px;
+  padding: 4px 14px;
+  border-radius: 10px;
+  box-shadow: 0 4px 0 var(--gold-deep);
+  transform: rotate(6deg);
+  animation: tagPop .6s 1.3s cubic-bezier(.3, 1.6, .5, 1) both;
+}
+
+@keyframes tagPop {
+  from { transform: rotate(6deg) scale(0); }
+  to { transform: rotate(6deg) scale(1); }
+}
+
+/* ---------- Xícara Interativa e Leiteira Servindo (#heroCup) ---------- */
+.cup-svg {
+  position: absolute;
+  right: -10px;
+  bottom: -24px;
+  width: 150px;
+  z-index: 15;
+  cursor: pointer;
+  overflow: visible;
+  filter: drop-shadow(0 14px 14px rgba(0, 0, 0, .35));
+  animation: cupIn .8s .5s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+@keyframes cupIn {
+  from { opacity: 0; transform: translateY(40px) scale(.8); }
+  to { opacity: 1; transform: none; }
+}
+
+.cup-svg .jug {
+  transform: translate(-80px, -60px);
+  opacity: 0;
+}
+
+.cup-svg .jug-tilt {
+  transform-origin: 20px 40px;
+}
+
+.cup-svg .stream {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.cup-svg .latte {
+  opacity: 0;
+}
+
+.cup-svg .heart {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0);
+}
+
+.cup-svg .splash {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+}
+
+.cup-svg.play .jug {
+  animation: jugMove 3.8s .9s ease-in-out both;
+}
+
+.cup-svg.play .jug-tilt {
+  animation: jugTilt 3.8s .9s ease-in-out both;
+}
+
+.cup-svg.play .stream {
+  animation: pour 3.8s .9s linear both;
+}
+
+.cup-svg.play .latte {
+  animation: latte 3.8s .9s ease-out both;
+}
+
+.cup-svg.play .heart {
+  animation: heart 3.8s .9s cubic-bezier(.3, 1.5, .5, 1) both;
+}
+
+.cup-svg.play .splash {
+  animation: splash 1.6s 2.3s ease-out both;
+}
+
+@keyframes jugMove {
+  0% { transform: translate(-80px, -60px); opacity: 0; }
+  14% { transform: translate(28px, 22px); opacity: 1; }
+  80% { transform: translate(28px, 22px); opacity: 1; }
+  100% { transform: translate(-80px, -60px); opacity: 0; }
+}
+
+@keyframes jugTilt {
+  0%, 16% { transform: rotate(0); }
+  30%, 68% { transform: rotate(40deg); }
+  82%, 100% { transform: rotate(0); }
+}
+
+@keyframes pour {
+  0%, 30% { stroke-dashoffset: 1; }
+  40%, 66% { stroke-dashoffset: 0; }
+  78%, 100% { stroke-dashoffset: -1; }
+}
+
+@keyframes latte {
+  0%, 36% { opacity: 0; }
+  72%, 100% { opacity: 1; }
+}
+
+@keyframes heart {
+  0%, 62% { transform: scale(0); }
+  86% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+@keyframes splash {
+  0% { opacity: .9; transform: scale(.3); }
+  100% { opacity: 0; transform: scale(1.6); }
+}
+
+.steam path {
+  opacity: 0;
+  animation: steam 3.2s ease-in-out infinite;
+}
+
+.steam path:nth-child(2) {
+  animation-delay: 1s;
+}
+
+.steam path:nth-child(3) {
+  animation-delay: 2s;
+}
+
+@keyframes steam {
+  0% { opacity: 0; transform: translateY(12px) scaleX(1); }
+  30% { opacity: .75; }
+  100% { opacity: 0; transform: translateY(-26px) scaleX(1.3); }
+}
+
+.cup-hint {
+  position: absolute;
+  right: 20px;
+  bottom: -46px;
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  font-size: 16px;
+  color: #CBB597;
+  z-index: 15;
+  animation: tagPop .5s 4.8s both;
+}
+
+/* ---------- Biscoitos Flutuando ---------- */
+.cookie {
+  position: absolute;
+  z-index: 14;
+  filter: drop-shadow(0 10px 10px rgba(0, 0, 0, .35));
+}
+
+.cookie.c1 {
+  left: -6px;
+  bottom: -4px;
+  width: 62px;
+  animation: cookieIn .8s .7s cubic-bezier(.2, .8, .2, 1) both, bob 4.2s 1.5s ease-in-out infinite;
+}
+
+.cookie.c2 {
+  left: 44px;
+  bottom: -18px;
+  width: 50px;
+  animation: cookieIn .8s .85s cubic-bezier(.2, .8, .2, 1) both, bob2 5s 1.6s ease-in-out infinite;
+}
+
+@keyframes cookieIn {
+  from { opacity: 0; transform: translateY(40px) rotate(-60deg); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-12px) rotate(10deg); }
+}
+
+@keyframes bob2 {
+  0%, 100% { transform: translateY(0) rotate(-8deg); }
+  50% { transform: translateY(-8px) rotate(6deg); }
+}
+
+/* ---------- Ondas de Café Entre Seções (.wave) ---------- */
+.wave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 38px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.wave svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  max-width: none;
+  height: 100%;
+}
+
+.wave .w1 {
+  animation: waveMove 9s linear infinite;
+}
+
+.wave .w2 {
+  animation: waveMove 14s linear infinite reverse;
+  opacity: .45;
+}
+
+@keyframes waveMove {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ---------- Manchas de Xícara (.stain) ---------- */
+.stain {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  opacity: .14;
+}
+
+/* ---------- Respingos de Leite nos Cliques (.milk-drop) ---------- */
+.milk-drop {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--milk);
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .06);
+  animation: drop .7s cubic-bezier(.2, .7, .3, 1) forwards;
+}
+
+@keyframes drop {
+  to {
+    transform: translate(var(--dx), var(--dy)) scale(.2);
+    opacity: 0;
+  }
+}
+
+/* ---------- Trilha de Grãos no Mouse (.trail-bean) ---------- */
+.trail-bean {
+  position: fixed;
+  width: 10px;
+  height: 14px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  background: radial-gradient(ellipse at 35% 30%, #9A6540, #4A2A18 60%);
+  animation: trail .9s ease-out forwards;
+}
+
+@keyframes trail {
+  to {
+    transform: translateY(40px) rotate(200deg) scale(.3);
+    opacity: 0;
+  }
+}
+
+/* ---------- Linha do Tempo com Café Gotejando ---------- */
+.timeline {
+  position: relative;
+  list-style: none;
+  display: grid;
+  gap: 18px;
+}
+
+@media (max-width: 759px) {
+  .timeline {
+    padding-left: 30px;
+  }
+  .drip-track {
+    left: 8px;
+    top: 6px;
+    bottom: 6px;
+    width: 6px;
+  }
+  .drip-fill {
+    transform-origin: top;
+    transform: scaleY(var(--p, 0));
+  }
+  .drip-drop {
+    left: -3px;
+    top: calc(var(--p, 0) * 100%);
+  }
+}
+
+@media (min-width: 760px) {
+  .timeline {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    padding-top: 34px;
+  }
+  .drip-track {
+    left: 4px;
+    right: 4px;
+    top: 4px;
+    height: 6px;
+  }
+  .drip-fill {
+    transform-origin: left;
+    transform: scaleX(var(--p, 0));
+  }
+  .drip-drop {
+    top: -2px;
+    left: calc(var(--p, 0) * 100% - 6px);
+  }
+}
+
+.drip-track {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 4px;
+  background: rgba(75, 44, 28, .12);
+}
+
+.drip-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #7A4424, #3A2114);
+}
+
+.drip-drop {
+  position: absolute;
+  width: 12px;
+  height: 16px;
+  border-radius: 50% 50% 50% 50%/60% 60% 40% 40%;
+  background: #5A331D;
+  animation: dropFall 1.4s ease-in infinite;
+}
+
+@keyframes dropFall {
+  0% { transform: translateY(0) scale(.6); opacity: 0; }
+  20% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { transform: translateY(40px) scale(.8); opacity: 0; }
+}
+
+.tl.lit::before {
+  animation: pop .5s cubic-bezier(.3, 1.7, .5, 1);
+  background: var(--gold-aged) !important;
+  box-shadow: 0 4px 0 var(--gold-deep) !important;
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+/* ---------- 3D Tilt com Reflexo nos Cards (.tilt, .glare) ---------- */
+.tilt {
+  transform-style: preserve-3d;
+  transition: transform .2s ease-out;
+  will-change: transform;
+}
+
+.tilt .glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity .3s;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, .45), transparent 55%);
+  z-index: 4;
+}
+
+.tilt:hover .glare {
+  opacity: 1;
+}
+
+/* ---------- Lousa Escolar com Moldura de Madeira ---------- */
+.chalkboard {
+  position: relative;
+  background: radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, .06), transparent 60%), #22322C;
+  color: var(--chalk);
+  border-radius: 18px;
+  padding: 30px 24px 26px;
+  border: 14px solid #7A4E2F;
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, .35), inset 0 0 40px rgba(0, 0, 0, .45), 0 10px 0 #4E301C, 0 22px 36px rgba(0, 0, 0, .35);
+}
+
+/* ---------- O Biscoito Sendo Molhado no Café (.dunk) ---------- */
+.dunk {
+  width: 130px;
+  margin: 0 auto -6px;
+  display: block;
+  overflow: visible;
+}
+
+.dunk .biscuit {
+  animation: dunk 4.2s ease-in-out infinite;
+}
+
+.dunk .wet {
+  animation: wet 4.2s ease-in-out infinite;
+}
+
+.dunk .ripple {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ripple 4.2s ease-out infinite;
+  opacity: 0;
+}
+
+@keyframes dunk {
+  0%, 12% { transform: translateY(-8px) rotate(-6deg); }
+  32%, 48% { transform: translateY(34px) rotate(0); }
+  66%, 100% { transform: translateY(-8px) rotate(-6deg); }
+}
+
+@keyframes wet {
+  0%, 40% { opacity: 0; }
+  56%, 86% { opacity: .75; }
+  100% { opacity: 0; }
+}
+
+@keyframes ripple {
+  0%, 28% { opacity: 0; transform: scale(.4); }
+  32% { opacity: .9; }
+  52% { opacity: 0; transform: scale(1.5); }
+  100% { opacity: 0; }
+}
+
+/* ---------- Explosão de Grãos (.burst-bean) ---------- */
+.burst-bean {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 19px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10;
+  background: radial-gradient(ellipse at 35% 30%, #9A6540, #4A2A18 60%, #2A170E);
+}
+
+.burst-bean::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 14%;
+  bottom: 14%;
+  width: 2px;
+  background: #1C0F09;
+  transform: translateX(-50%) rotate(10deg);
+}
+
+/* ---------- 3D Coverflow (.cf, .cf-track, .cf-slide) ---------- */
+.cf {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 0 4px;
+}
+
+.cf-track {
+  position: relative;
+  height: 380px;
+  width: 100%;
+  max-width: 580px;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.cf-track.tall {
+  height: 420px;
+}
+
+.cf-track.tall .cf-slide img {
+  aspect-ratio: 941/1672;
+  object-fit: cover;
+}
+
+.cf-slide {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 220px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateZ(-300px);
+  transition: transform .5s cubic-bezier(.2, .8, .2, 1), opacity .4s ease;
+}
+
+.cf-track.tall .cf-slide {
+  width: 215px;
+}
+
+.cf-slide img {
+  width: 100%;
+  border-radius: 14px;
+  box-shadow: 0 18px 30px rgba(0, 0, 0, .45), 0 0 0 1px rgba(0, 0, 0, .15);
+  background: #FFF0D1;
+}
+
+.cf-slide.pos-center {
+  opacity: 1;
+  transform: translateX(-50%) translateZ(0);
+  z-index: 3;
+  pointer-events: auto;
+}
+
+.cf-slide.pos-left {
+  opacity: .7;
+  transform: translateX(-112%) translateZ(-160px) rotateY(38deg);
+  z-index: 1;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.cf-slide.pos-right {
+  opacity: .7;
+  transform: translateX(12%) translateZ(-160px) rotateY(-38deg);
+  z-index: 1;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.cf-nav {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--cream-vintage);
+  color: var(--text-dark);
+  border: 1px solid rgba(201, 154, 69, 0.5);
+  font-size: 24px;
+  font-weight: 800;
+  cursor: pointer;
+  flex-shrink: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 0 #C99A45, 0 8px 14px rgba(0, 0, 0, .25);
+  transition: transform 0.1s;
+}
+
+.cf-nav:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #C99A45;
+}
+
+.cf-dots {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(43, 22, 15, .3);
+  cursor: pointer;
+  transition: background .2s, transform .2s;
+}
+
+.dot.active {
+  background: var(--wine-classic);
+  transform: scale(1.3);
+}
+
+@media (max-width: 480px) {
+  .cf-track { height: 320px; }
+  .cf-track.tall { height: 360px; }
+  .cf-slide { width: 180px; }
+  .cf-track.tall .cf-slide { width: 180px; }
+  .cf-nav { width: 38px; height: 38px; font-size: 19px; }
+  .cup-svg { width: 118px; right: -12px; bottom: -26px; }
+  .cookie.c1 { width: 50px; }
+  .cookie.c2 { width: 40px; left: 34px; }
+  .mock-scene { height: 350px; }
+}
+
+/* ---------- Prova Social Toast (.social-proof) ---------- */
+.social-proof {
+  position: fixed;
+  right: 14px;
+  top: 64px;
+  z-index: 60;
+  background: var(--cream-vintage);
+  color: var(--text-dark);
+  border-radius: 16px;
+  padding: 13px 15px;
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  max-width: 290px;
+  transform: translateY(-160%);
+  opacity: 0;
+  transition: transform .35s ease, opacity .35s ease;
+  cursor: pointer;
+  box-shadow: 0 6px 0 #C99A45, 0 14px 24px rgba(0, 0, 0, .3);
+  border: 1px solid rgba(201, 154, 69, 0.4);
+}
+
+.social-proof.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.sp-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--wine-classic);
+  color: #FFF0D1;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sp-text {
+  font-size: 12.5px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.sp-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+.sp-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold-aged);
+}
+
+.sp-close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: 12px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+/* ---------- Letreiro de Citações Literárias ---------- */
 @keyframes marquee {
   0% { transform: translateX(0%); }
   100% { transform: translateX(-50%); }
 }
 
-@keyframes marquee-reverse {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0%); }
-}
-
 .animate-marquee {
-  display: flex;
+  display: inline-flex;
   width: max-content;
-  animation: marquee 35s linear infinite;
+  animation: marquee 38s linear infinite;
 }
 
-.animate-marquee-reverse {
-  display: flex;
-  width: max-content;
-  animation: marquee-reverse 35s linear infinite;
-}
-
-.animate-marquee:hover,
-.animate-marquee-reverse:hover {
+.animate-marquee:hover {
   animation-play-state: paused;
 }
 

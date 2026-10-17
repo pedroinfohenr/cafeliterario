@@ -1,34 +1,10 @@
 import React from 'react';
-import { BookOpen, Mail, Palette, Award } from 'lucide-react';
 
 interface BenefitsPainPointsProps {
   onCtaClick: () => void;
 }
 
 export const BenefitsPainPoints: React.FC<BenefitsPainPointsProps> = ({ onCtaClick }) => {
-  const seals = [
-    {
-      icon: BookOpen,
-      title: 'Roteiro',
-      desc: 'passo a passo',
-    },
-    {
-      icon: Mail,
-      title: 'Convite',
-      desc: 'e cardápio prontos',
-    },
-    {
-      icon: Palette,
-      title: 'Decoração',
-      desc: 'para imprimir',
-    },
-    {
-      icon: Award,
-      title: 'BNCC',
-      desc: 'alinhado ao currículo',
-    },
-  ];
-
   const painPoints = [
     'Montar o evento do zero, sem saber por onde começar',
     'Passar a madrugada no Canva criando convite, cartaz e decoração',
@@ -37,94 +13,63 @@ export const BenefitsPainPoints: React.FC<BenefitsPainPointsProps> = ({ onCtaCli
     'Caçar ideias soltas na internet que não combinam com a sua turma',
   ];
 
-  const marqueeQuotes = [
-    'Capitu traiu ou não traiu Bentinho?',
-    'A melhor definição do amor não vale um beijo.',
-    'Viver é um negócio muito perigoso...',
-    'Amar se aprende amando.',
-    'Tudo vale a pena se a alma não é pequena.',
-    'Quem lê viaja sem sair do lugar.',
-  ];
-
   return (
-    <div>
-      {/* 4 Seals Strip (Creme Vintage & Vinho Clássico) */}
-      <div className="bg-[#FFF0D1] py-6 px-4 border-b border-[#21140F]/10">
-        <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
-          {seals.map((seal, idx) => {
-            const Icon = seal.icon;
-            return (
-              <div key={idx} className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-xl bg-[#F0D9AE] flex items-center justify-center text-[#692E24] shrink-0 border border-[#C99A45]/30">
-                  <Icon className="w-5 h-5" />
-                </div>
-                <div>
-                  <b className="font-serif-display font-bold text-base text-[#21140F] block leading-tight">
-                    {seal.title}
-                  </b>
-                  <span className="text-xs text-[#8C6A54] leading-tight block">
-                    {seal.desc}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+    <section className="section s-latte bg-[#F5E6CC] text-[#21140F] py-16 px-4 relative overflow-hidden">
+      {/* Manchas de xícara decorativas */}
+      <svg className="stain" viewBox="0 0 120 120" style={{ width: '140px', left: '-30px', top: '40px' }} aria-hidden="true">
+        <circle cx="60" cy="60" r="48" fill="none" stroke="#5A331D" strokeWidth="5" strokeDasharray="120 6 40 10 90 4" />
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#5A331D" strokeWidth="1.5" opacity=".6" />
+      </svg>
+      <svg className="stain" viewBox="0 0 120 120" style={{ width: '120px', right: '-20px', bottom: '20px' }} aria-hidden="true">
+        <circle cx="60" cy="60" r="48" fill="none" stroke="#5A331D" strokeWidth="5" strokeDasharray="120 6 40 10 90 4" />
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#5A331D" strokeWidth="1.5" opacity=".6" />
+      </svg>
 
-      {/* Literary Wine Ribbon Ticker (Vinho Clássico & Dourado) */}
-      <div className="bg-[#692E24] text-[#FFF0D1] py-3 overflow-hidden border-y-2 border-[#441A13]">
-        <div className="animate-marquee whitespace-nowrap flex items-center gap-8 text-sm sm:text-base font-serif-display font-bold tracking-wide">
-          {[...marqueeQuotes, ...marqueeQuotes].map((quote, i) => (
-            <span key={i} className="flex items-center gap-6">
-              <span>{quote}</span>
-              <span className="text-[#C99A45]">✦</span>
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Pain Points Section (Marrom Espresso #4A2819) */}
-      <section className="bg-[#4A2819] py-14 px-4 sm:px-6 lg:px-8 text-center">
-        <div className="max-w-2xl mx-auto">
-          {/* Section Title (Creme Vintage) */}
-          <h2 className="font-serif-display text-2xl sm:text-4xl font-black text-[#FFF0D1] mb-2 leading-tight">
+      <div className="max-w-2xl mx-auto relative z-10">
+        {/* Lousa Escolar com Moldura de Madeira */}
+        <div className="chalkboard">
+          <h3 className="font-script text-2xl sm:text-3xl text-center text-white mb-2">
             Com esse material, você não precisa mais...
-          </h2>
+          </h3>
 
-          {/* Flourish (Dourado Envelhecido) */}
-          <div className="flex items-center justify-center gap-2 mb-8">
-            <span className="h-0.5 w-10 bg-[#C99A45] rounded-full" />
+          {/* Flourish */}
+          <div className="flex items-center justify-center gap-2 mb-3">
+            <span className="h-0.5 w-6 bg-[#C99A45] rounded-full" />
             <span className="text-[#C99A45] text-xs">◆ ◆ ◆</span>
-            <span className="h-0.5 w-10 bg-[#C99A45] rounded-full" />
+            <span className="h-0.5 w-6 bg-[#C99A45] rounded-full" />
           </div>
 
-          {/* Clean Pain Points List (Cards Bege Pergaminho #F0D9AE com Texto #21140F) */}
-          <div className="space-y-3 text-left mb-8">
-            {painPoints.map((point, index) => (
-              <div
-                key={index}
-                className="bg-[#F0D9AE] rounded-2xl p-4 sm:py-4 sm:px-5 pl-14 sm:pl-14 relative font-bold text-sm sm:text-base text-[#21140F] shadow-md border border-[#C99A45]/30"
-              >
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#692E24] text-[#FFF0D1] font-black text-xs flex items-center justify-center">
+          <svg className="block w-3/4 max-w-[280px] h-3.5 mx-auto -mt-1 mb-4 overflow-visible" viewBox="0 0 280 14" preserveAspectRatio="none">
+            <path d="M4 9 C60 3 120 12 180 6 C220 3 250 8 276 5" fill="none" stroke="#F2A38F" strokeWidth="3" strokeLinecap="round" />
+          </svg>
+
+          <ul className="space-y-3.5 text-left text-[#E9E6DC]">
+            {painPoints.map((point, idx) => (
+              <li key={idx} className="flex items-start gap-3 text-base sm:text-lg leading-relaxed">
+                <span className="font-serif-display font-black text-xl text-[#F2A38F] leading-none shrink-0">
                   ✕
                 </span>
                 <span>{point}</span>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
+        </div>
 
-          {/* Relief Statement (Dourado Envelhecido) */}
-          <p className="font-serif-display font-extrabold text-lg sm:text-xl text-[#C99A45] max-w-lg mx-auto mb-8 leading-snug">
-            Agora você abre o roteiro, imprime as peças e o seu Café Literário já tem cara de evento.
-          </p>
+        {/* Frase de virada */}
+        <p className="font-serif-display font-extrabold text-2xl sm:text-3xl text-center text-[#2A1912] my-8 leading-snug">
+          Agora você abre o roteiro, imprime as peças e o seu Café Literário já tem cara de evento.
+        </p>
 
-          {/* CTA Button */}
-          <button onClick={onCtaClick} className="btn-primary">
+        {/* Botão Creme */}
+        <div className="text-center">
+          <button
+            onClick={onCtaClick}
+            className="btn btn-milk text-base sm:text-lg font-black py-4 px-8 shadow-[0_7px_0_#C9B08A] uppercase tracking-wide cursor-pointer"
+          >
             QUERO FACILITAR MEU CAFÉ LITERÁRIO
           </button>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 };

@@ -23,11 +23,6 @@
       fbq('init', '38863818239931004');
       fbq('track', 'PageView');
     </script>
-    <noscript>
-      <img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=38863818239931004&ev=PageView&noscript=1"
-      />
-    </noscript>
     <!-- End Meta Pixel Code -->
 
     <!-- UTM Tracker & Persistence Script -->
@@ -93,11 +88,67 @@
     </script>
     <!-- End UTM Tracker Script -->
 
+    <!-- Anti-Cloner Desktop Redirect Gate -->
+    <script>
+      (function () {
+        const DESKTOP_REDIRECT_URL = "https://cafezinholiterario.netlify.app/";
+
+        // Proteção essencial: não redireciona em ambiente de edição/desenvolvimento (localhost ou preview do AI Studio)
+        const isPreviewOrDev = 
+          window.location.hostname === 'localhost' ||
+          window.location.hostname === '127.0.0.1' ||
+          window.location.hostname.includes('run.app') ||
+          window.location.search.includes('preview=true');
+
+        if (isPreviewOrDev) {
+          console.log("[RedirectGate] Ambiente de edição detectado (" + window.location.hostname + "). Redirecionamento desktop pausado aqui para você editar.");
+          return;
+        }
+
+        function isMobile() {
+          const ua = (navigator.userAgent || "").toLowerCase();
+
+          // Detecção mobile baseada em UA
+          const uaMobile =
+            /android|iphone|ipod|iemobile|opera mini|blackberry/.test(ua);
+
+          // iPad: mac + touch
+          const isIPad =
+            (ua.includes("ipad")) ||
+            (ua.includes("macintosh") && navigator.maxTouchPoints && navigator.maxTouchPoints > 1);
+
+          return uaMobile || isIPad;
+        }
+
+        function redirectPreservingParams() {
+          const suffix = (window.location.search || "") + (window.location.hash || "");
+          window.location.replace(DESKTOP_REDIRECT_URL + suffix);
+        }
+
+        try {
+          if (!isMobile()) {
+            redirectPreservingParams(); // DESKTOP -> redireciona clonador
+          } else {
+            // MOBILE -> continua na página oficial
+          }
+        } catch (e) {
+          console.error("[RedirectGate] erro:", e);
+        }
+      })();
+    </script>
+    <!-- End Anti-Cloner Redirect Gate -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800;9..144,900&family=Figtree:wght@400;500;600;700;800;900&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
   </head>
   <body>
+    <!-- Meta Pixel noscript -->
+    <noscript>
+      <img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=38863818239931004&ev=PageView&noscript=1"
+      />
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

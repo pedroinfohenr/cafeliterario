@@ -29,19 +29,7 @@
     </filter>
   </defs>
 
-  <!-- Background Canvas: Vintage Dark Oak Table -->
-  <rect width="900" height="600" rx="24" fill="url(#tableGlow)" />
-  <rect width="892" height="592" x="4" y="4" rx="20" fill="none" stroke="#C99A45" stroke-opacity="0.25" stroke-width="2" stroke-dasharray="10 6" />
-
-  <!-- Background Ornaments / Flourishes -->
-  <g fill="#C99A45" opacity="0.15">
-    <circle cx="120" cy="100" r="60" />
-    <circle cx="780" cy="100" r="60" />
-    <circle cx="120" cy="500" r="60" />
-    <circle cx="780" cy="500" r="60" />
-  </g>
-
-  <!-- Group: Mockup Kit Composition -->
+  <!-- Group: Mockup Kit Composition (Without background square) -->
   <g filter="url(#shadow)">
 
     <!-- BACK ITEM: Vintage Binder / Folder (Wine Leather) -->

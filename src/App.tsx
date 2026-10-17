@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { HeaderUrgency } from './components/HeaderUrgency';
 import { Hero } from './components/Hero';
 import { BenefitsPainPoints } from './components/BenefitsPainPoints';
@@ -10,18 +10,17 @@ import { PricingSection } from './components/PricingSection';
 import { HowItWorksTestimonials } from './components/HowItWorksTestimonials';
 import { FAQSection } from './components/FAQSection';
 import { Footer } from './components/Footer';
-import { CheckoutModal } from './components/CheckoutModal';
+import { UpsellModal } from './components/UpsellModal';
+import { SectionCurtainDivider } from './components/SectionCurtainDivider';
+import { SocialProofToast } from './components/SocialProofToast';
 
 /**
- * CONFIGURAÇÃO DE CHECKOUT EXTERNO:
- * Se você tiver links da Kiwify, Hotmart, Braip, Monetizze ou Eduzz,
- * basta preencher as constantes abaixo.
- * Se mantiver vazio (""), a página abrirá o modal interativo com PIX Copia e Cola e Cartão.
+ * LINKS OFICIAIS DE CHECKOUT WIAPY
  */
-export const CHECKOUT_URL_BASICO = '';
-export const CHECKOUT_URL_COMPLETO = '';
+export const CHECKOUT_URL_BASICO = 'https://pay.wiapy.com/6ad2d7dbc8bdfc2949a16756';
+export const CHECKOUT_URL_COMPLETO_PROMO = 'https://pay.wiapy.com/AeOPv8-Bq5A';
+export const CHECKOUT_URL_COMPLETO = 'https://pay.wiapy.com/6ad2d764b11ba1ecaf4f631e';
 
-// Helper to append UTMs and fire InitiateCheckout event
 declare global {
   interface Window {
     appendCurrentUtms?: (url: string) => string;
@@ -30,18 +29,26 @@ declare global {
 }
 
 export default function App() {
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [selectedPackage, setSelectedPackage] = useState<'basico' | 'completo'>('completo');
+  const [isUpsellOpen, setIsUpsellOpen] = useState(false);
 
-  const trackCheckout = (pkg: 'basico' | 'completo') => {
-    if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
-      window.fbq('track', 'InitiateCheckout', {
-        content_name: pkg === 'completo' ? 'Pacote Completo Café Literário' : 'Pacote Básico Café Literário',
-        value: pkg === 'completo' ? 19.90 : 10.00,
-        currency: 'BRL',
-      });
-    }
-  };
+  // Trilha de grãos de café seguindo o mouse no desktop
+  useEffect(() => {
+    let last = 0;
+    const handlePointerMove = (e: PointerEvent) => {
+      const now = performance.now();
+      if (now - last < 55) return;
+      last = now;
+      const b = document.createElement('span');
+      b.className = 'trail-bean';
+      b.style.left = `${e.clientX - 5}px`;
+      b.style.top = `${e.clientY - 7}px`;
+      document.body.appendChild(b);
+      setTimeout(() => b.remove(), 950);
+    };
+
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    return () => window.removeEventListener('pointermove', handlePointerMove);
+  }, []);
 
   const getUrlWithUtms = (url: string) => {
     if (typeof window !== 'undefined' && typeof window.appendCurrentUtms === 'function') {
@@ -50,85 +57,119 @@ export default function App() {
     return url;
   };
 
-  // Triggered by "Quero o Completo" or hero/benefits CTA
-  const handleOpenCompleteCheckout = () => {
-    trackCheckout('completo');
-    if (CHECKOUT_URL_COMPLETO) {
-      window.location.href = getUrlWithUtms(CHECKOUT_URL_COMPLETO);
-      return;
+  const trackCheckout = (name: string, value: number) => {
+    if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
+      window.fbq('track', 'InitiateCheckout', {
+        content_name: name,
+        value: value,
+        currency: 'BRL',
+      });
     }
-    setSelectedPackage('completo');
-    setIsCheckoutOpen(true);
   };
 
-  // Triggered by "Quero o Básico"
-  const handleSelectPackage = (pkg: 'basico' | 'completo') => {
-    trackCheckout(pkg);
-    if (pkg === 'basico' && CHECKOUT_URL_BASICO) {
-      window.location.href = getUrlWithUtms(CHECKOUT_URL_BASICO);
-      return;
-    }
-    if (pkg === 'completo' && CHECKOUT_URL_COMPLETO) {
-      window.location.href = getUrlWithUtms(CHECKOUT_URL_COMPLETO);
-      return;
-    }
-    setSelectedPackage(pkg);
-    setIsCheckoutOpen(true);
+  const handleSelectCompleto = () => {
+    trackCheckout('Pacote Completo Café Literário', 19.90);
+    window.location.href = getUrlWithUtms(CHECKOUT_URL_COMPLETO);
   };
 
-  // Smooth scroll to pricing section or direct checkout
+  const handleSelectBasico = () => {
+    setIsUpsellOpen(true);
+  };
+
+  const handleAcceptPromo = () => {
+    trackCheckout('Pacote Completo Oferta R$ 15,90', 15.90);
+    window.location.href = getUrlWithUtms(CHECKOUT_URL_COMPLETO_PROMO);
+  };
+
+  const handleDeclinePromo = () => {
+    trackCheckout('Pacote Básico Café Literário', 10.00);
+    window.location.href = getUrlWithUtms(CHECKOUT_URL_BASICO);
+  };
+
   const handleScrollToPricing = () => {
-    const el = document.getElementById('pricing');
+    const el = document.getElementById('planos');
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     } else {
-      handleOpenCompleteCheckout();
+      handleSelectCompleto();
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#2B160F] text-[#FFF0D1] selection:bg-[#C99A45] selection:text-[#21140F]">
-      {/* 1. Urgency Countdown & Striped Awning Bar */}
+      {/* 1. Barra de Urgência com Cronômetro */}
       <HeaderUrgency />
 
+      {/* Notificação Popup de Prova Social */}
+      <SocialProofToast />
+
       <main className="flex-1">
-        {/* 2. Hero Section */}
+        {/* 2. Hero Section (bg #2B160F) */}
         <Hero onCtaClick={handleScrollToPricing} />
 
-        {/* 3. Quick Features, Marquee & Pain Points Parchment */}
-        <BenefitsPainPoints onCtaClick={handleScrollToPricing} />
+        {/* Onda de café fluida entrando na Lousa (bg #F5E6CC) com a cor exata do Hero #2B160F */}
+        <div className="relative">
+          <SectionCurtainDivider color="#2B160F" />
+          <BenefitsPainPoints onCtaClick={handleScrollToPricing} />
+        </div>
 
-        {/* 4. Timeline: 6 Steps */}
-        <TimelineSteps />
+        {/* Onda de café fluida entrando na Linha do Tempo (bg #FFF0D1) com a cor da Lousa #F5E6CC */}
+        <div className="relative">
+          <SectionCurtainDivider color="#F5E6CC" />
+          <TimelineSteps />
+        </div>
 
-        {/* 5. Interactive Showcase: Peças & Decoração */}
-        <MaterialsShowcase />
+        {/* Onda de café fluida entrando em Peças (bg #F5E6CC) com a cor da Linha do Tempo #FFF0D1 */}
+        <div className="relative">
+          <SectionCurtainDivider color="#FFF0D1" />
+          <MaterialsShowcase />
+        </div>
 
-        {/* 6. Segmentation & Lifetime Guarantees */}
-        <AudienceGarantias />
+        {/* Onda de café fluida entrando em Turmas (bg #FFF0D1) com a cor de Peças #F5E6CC */}
+        <div className="relative">
+          <SectionCurtainDivider color="#F5E6CC" />
+          <AudienceGarantias />
+        </div>
 
-        {/* 7. 4 Bonuses (R$ 110,60 Grátis) */}
+        {/* 7. 4 Bônus Exclusivos (bg #4A2819) com as 4 imagens originais do usuário */}
         <BonusesSection />
 
-        {/* 8. Pricing Section (Básico R$ 10 / Completo R$ 19,90) */}
-        <PricingSection onSelectPackage={handleSelectPackage} />
+        {/* Onda de café fluida entrando na Oferta (bg #2B160F) com a cor dos Bônus #4A2819 */}
+        <div className="relative">
+          <SectionCurtainDivider color="#4A2819" />
+          <PricingSection
+            onSelectPackage={(pkg) => {
+              if (pkg === 'basico') {
+                handleSelectBasico();
+              } else {
+                handleSelectCompleto();
+              }
+            }}
+          />
+        </div>
 
-        {/* 9. 3 Steps & Testimonials WhatsApp Carousel */}
-        <HowItWorksTestimonials onCtaClick={handleScrollToPricing} />
+        {/* Onda de café fluida entrando no Passo a Passo & Depoimentos */}
+        <div className="relative">
+          <SectionCurtainDivider color="#2B160F" />
+          <HowItWorksTestimonials onCtaClick={handleScrollToPricing} />
+        </div>
 
-        {/* 10. FAQ Accordion */}
-        <FAQSection />
+        {/* Onda de café fluida entrando no FAQ (bg #FFF0D1) */}
+        <div className="relative">
+          <SectionCurtainDivider color="#2B160F" />
+          <FAQSection />
+        </div>
       </main>
 
-      {/* 11. Footer */}
+      {/* 11. Rodapé Oficial */}
       <Footer />
 
-      {/* 12. Checkout Modal */}
-      <CheckoutModal
-        isOpen={isCheckoutOpen}
-        onClose={() => setIsCheckoutOpen(false)}
-        selectedPackage={selectedPackage}
-        onSwitchPackage={setSelectedPackage}
+      {/* Pop-up Irresistível de Upsell (Completo por R$ 15,90 ao clicar no Básico) */}
+      <UpsellModal
+        isOpen={isUpsellOpen}
+        onClose={() => setIsUpsellOpen(false)}
+        onAcceptPromo={handleAcceptPromo}
+        onDeclinePromo={handleDeclinePromo}
       />
     </div>
   );

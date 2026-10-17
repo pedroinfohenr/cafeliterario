@@ -1,104 +1,95 @@
-import React from 'react';
-import { Mail, Palette, Coffee, BookOpen, Mic, GraduationCap } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export const TimelineSteps: React.FC = () => {
   const steps = [
-    {
-      number: 'Etapa 1',
-      title: 'Convite',
-      desc: 'chama a escola',
-      icon: Mail,
-    },
-    {
-      number: 'Etapa 2',
-      title: 'Decoração',
-      desc: 'clima de café e livraria',
-      icon: Palette,
-    },
-    {
-      number: 'Etapa 3',
-      title: 'Recepção',
-      desc: 'crachá e cardápio literário',
-      icon: Coffee,
-    },
-    {
-      number: 'Etapa 4',
-      title: 'Mesas',
-      desc: 'dos pensadores e autores',
-      icon: BookOpen,
-    },
-    {
-      number: 'Etapa 5',
-      title: 'Rodas',
-      desc: 'de perguntas e sarau',
-      icon: Mic,
-    },
-    {
-      number: 'Etapa 6',
-      title: 'Encerramento',
-      desc: 'com certificado de mérito',
-      icon: GraduationCap,
-    },
+    { num: 'Etapa 1', title: 'Convite', desc: 'chama a escola' },
+    { num: 'Etapa 2', title: 'Decoração', desc: 'clima de café e livraria' },
+    { num: 'Etapa 3', title: 'Recepção', desc: 'crachá e cardápio literário' },
+    { num: 'Etapa 4', title: 'Mesas', desc: 'dos pensadores e autores' },
+    { num: 'Etapa 5', title: 'Rodas', desc: 'de perguntas e sarau' },
+    { num: 'Etapa 6', title: 'Encerramento', desc: 'com certificado de mérito' },
   ];
 
+  const timelineRef = useRef<HTMLOListElement>(null);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const el = timelineRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const p = Math.max(0, Math.min(1, (vh * 0.75 - r.top) / (r.height + vh * 0.1)));
+      setProgress(p);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <section className="bg-[#FFF0D1] py-16 px-4 sm:px-6 lg:px-8 border-b border-[#21140F]/10 text-center">
-      <div className="max-w-2xl mx-auto">
-        {/* Eyebrow (Vinho Clássico) */}
-        <p className="hand text-2xl sm:text-3xl text-[#692E24] mb-1 font-bold">
-          Tudo pensado para você
-        </p>
+    <section className="section s-milk bg-[#FFF0D1] text-[#21140F] py-16 px-4 relative overflow-hidden">
+      <div className="max-w-4xl mx-auto relative z-10">
+        <div className="text-center mb-10">
+          <span className="font-script text-2xl sm:text-3xl text-[#692E24] font-bold block mb-1">
+            Tudo pensado para você
+          </span>
+          <h2 className="font-serif-display font-black text-3xl sm:text-5xl text-[#21140F] mb-3">
+            Do convite ao encerramento, cada etapa já vem pronta
+          </h2>
 
-        {/* Title (Marrom Quase Preto) */}
-        <h2 className="font-serif-display text-2xl sm:text-4xl font-black text-[#21140F] leading-tight mb-2">
-          Do convite ao encerramento, cada etapa já vem pronta
-        </h2>
-
-        {/* Flourish (Dourado Envelhecido) */}
-        <div className="flex items-center justify-center gap-2 mb-3">
-          <span className="h-0.5 w-8 bg-[#C99A45] rounded-full" />
-          <span className="text-[#C99A45] text-xs">◆ ◆ ◆</span>
-          <span className="h-0.5 w-8 bg-[#C99A45] rounded-full" />
-        </div>
-
-        {/* Subtitle */}
-        <p className="text-sm sm:text-base text-[#4A2819] max-w-lg mx-auto mb-10 font-medium">
-          O roteiro conduz o evento inteiro. Você só adapta para a sua turma.
-        </p>
-
-        {/* Timeline */}
-        <div className="relative max-w-md mx-auto text-left">
-          {/* Vertical connecting line (Vinho Clássico) */}
-          <div className="absolute left-6 sm:left-7 top-6 bottom-6 w-0.5 bg-[#692E24]" />
-
-          <div className="space-y-3.5 relative z-10">
-            {steps.map((step, idx) => {
-              const Icon = step.icon;
-              return (
-                <div key={idx} className="flex items-center gap-4">
-                  {/* Circle (Vinho Clássico) */}
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#692E24] text-[#FFF0D1] flex items-center justify-center shadow-md shrink-0 border-2 border-[#FFF0D1]">
-                    <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
-                  </div>
-
-                  {/* Card (Bege Pergaminho #F0D9AE com Texto #21140F) */}
-                  <div className="flex-1 bg-[#F0D9AE] p-3.5 sm:p-4 rounded-2xl shadow-sm border border-[#C99A45]/30">
-                    <span className="hand text-base text-[#692E24] block leading-none mb-0.5 font-bold">
-                      {step.number}
-                    </span>
-                    <h3 className="font-serif-display font-black text-base sm:text-lg text-[#21140F] leading-tight">
-                      {step.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-[#4A2819] font-medium leading-tight mt-0.5">
-                      {step.desc}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
+          {/* Flourish */}
+          <div className="flex items-center justify-center gap-2 mb-3">
+            <span className="h-0.5 w-8 bg-[#C99A45] rounded-full" />
+            <span className="text-[#C99A45] text-xs">◆ ◆ ◆</span>
+            <span className="h-0.5 w-8 bg-[#C99A45] rounded-full" />
           </div>
+
+          <p className="text-base sm:text-lg text-[#5E4332] max-w-xl mx-auto font-medium">
+            O roteiro conduz o evento inteiro. Você só adapta para a sua turma.
+          </p>
         </div>
 
+        {/* Timeline com Café Gotejando */}
+        <ol
+          ref={timelineRef}
+          className="timeline relative"
+          style={{ '--p': progress.toFixed(3) } as React.CSSProperties}
+        >
+          {/* Drip Track */}
+          <div className="drip-track" aria-hidden="true">
+            <div className="drip-fill" />
+            <div className="drip-drop" />
+          </div>
+
+          {steps.map((step, idx) => {
+            const isLit = progress >= (idx + 0.35) / steps.length;
+            return (
+              <li
+                key={idx}
+                className={`tl bg-[#F0D9AE] rounded-2xl p-5 relative shadow-[0_8px_0_#C99A45,0_16px_26px_rgba(42,25,18,0.18)] border border-[#C99A45]/40 ${
+                  isLit ? 'lit' : ''
+                }`}
+              >
+                <div className="flex items-baseline justify-between mb-1.5">
+                  <span className="text-xs uppercase font-bold text-[#8C6A54] tracking-wider">
+                    {step.num}
+                  </span>
+                  <span className="w-6 h-6 rounded-full bg-[#692E24] text-[#FFF0D1] font-serif-display font-black flex items-center justify-center text-xs shadow-[0_2px_0_#441A13]">
+                    {idx + 1}
+                  </span>
+                </div>
+                <h4 className="font-serif-display font-black text-xl text-[#21140F] mb-0.5">
+                  {step.title}
+                </h4>
+                <p className="text-xs sm:text-sm text-[#692E24] font-semibold leading-relaxed">
+                  {step.desc}
+                </p>
+              </li>
+            );
+          })}
+        </ol>
       </div>
     </section>
   );

@@ -4,10 +4,12 @@ import {
   ShieldCheck, 
   ChevronLeft, 
   ChevronRight, 
-  ZoomIn,
-  ZoomOut,
-  Coffee
+  ZoomIn, 
+  ZoomOut, 
+  Coffee 
 } from 'lucide-react';
+import { FloatingCoffeeElements } from './FloatingCoffeeElements';
+import { getSiteImage } from '../utils/imageStorage';
 
 import depoimento1 from '../imagens/depoimento-1.png';
 import depoimento2 from '../imagens/depoimento-2.png';
@@ -33,6 +35,14 @@ export const HowItWorksTestimonials: React.FC<HowItWorksTestimonialsProps> = ({ 
   ];
 
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [customImages] = useState<Record<string, string>>(() => {
+    const loaded: Record<string, string> = {};
+    TESTIMONIAL_IMAGES.forEach((t) => {
+      loaded[t.id] = getSiteImage(t.id, t.src);
+    });
+    return loaded;
+  });
+
   const [isZoomOpen, setIsZoomOpen] = useState<boolean>(false);
   const [isMaxZoom, setIsMaxZoom] = useState<boolean>(false);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
@@ -53,7 +63,7 @@ export const HowItWorksTestimonials: React.FC<HowItWorksTestimonialsProps> = ({ 
     if (isZoomOpen) return;
     const timer = setInterval(() => {
       nextSlide();
-    }, 4500);
+    }, 5500);
     return () => clearInterval(timer);
   }, [isZoomOpen, nextSlide]);
 
@@ -90,19 +100,23 @@ export const HowItWorksTestimonials: React.FC<HowItWorksTestimonialsProps> = ({ 
         setIsMaxZoom(false);
       }
     };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [nextSlide, prevSlide]);
 
-  const currentImage = TESTIMONIAL_IMAGES[currentIndex];
+  const currentItem = TESTIMONIAL_IMAGES[currentIndex];
+  const currentImgSrc = customImages[currentItem.id] || currentItem.src;
 
   return (
     <div className="relative">
       {/* ========================================================
           COMO FUNCIONA O ACESSO (3 PASSOS)
          ======================================================== */}
-      <section className="py-16 sm:py-24 bg-[#4A2819] text-[#FFF0D1] border-t-2 border-b-2 border-[#C99A45]/30">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <section className="py-16 sm:py-24 bg-[#4A2819] text-[#FFF0D1] border-t-2 border-b-2 border-[#C99A45]/30 relative overflow-hidden">
+        <FloatingCoffeeElements density="subtle" animated={false} />
+        
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
           <div className="text-center mb-12">
             <span className="inline-block text-xs uppercase tracking-widest text-[#C99A45] font-bold mb-2">
               Praticidade Total
@@ -134,14 +148,13 @@ export const HowItWorksTestimonials: React.FC<HowItWorksTestimonialsProps> = ({ 
       </section>
 
       {/* ========================================================
-          CARROSSEL LIMPO DE DEPOIMENTOS (APENAS AS IMAGENS PASSANDO)
+          CARROSSEL 3D COVERFLOW DE DEPOIMENTOS
          ======================================================== */}
       <section 
         className="py-20 sm:py-28 bg-[#2B160F] text-[#FFF0D1] relative overflow-hidden" 
         id="depoimentos"
       >
-        {/* Subtle decorative background texture */}
-        <div className="absolute inset-0 bg-[radial-gradient(#C99A45_1px,transparent_1px)] [background-size:28px_28px] opacity-15 pointer-events-none" />
+        <FloatingCoffeeElements density="subtle" animated={true} />
 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
           
@@ -161,57 +174,134 @@ export const HowItWorksTestimonials: React.FC<HowItWorksTestimonialsProps> = ({ 
           </div>
 
           {/* ========================================================
-              APENAS AS IMAGENS EM CARROSSEL PASSANDO
+              3D COVERFLOW
              ======================================================== */}
           <div 
-            className="relative max-w-lg mx-auto"
+            className="relative max-w-4xl mx-auto py-2 select-none"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           >
-            {/* Active Image Card */}
-            <div 
-              onClick={() => setIsZoomOpen(true)}
-              className="group relative bg-[#4A2819] rounded-3xl p-3 sm:p-4 border-2 border-[#C99A45] shadow-[0_12px_45px_rgba(0,0,0,0.65)] hover:shadow-[0_16px_55px_rgba(201,154,69,0.25)] transition-all cursor-pointer overflow-hidden flex items-center justify-center min-h-[460px] sm:min-h-[560px]"
-            >
-              <img
-                key={currentImage.src}
-                src={currentImage.src}
-                alt={currentImage.alt}
-                className="w-full h-auto max-h-[580px] object-contain rounded-2xl shadow-xl transition-transform duration-500 group-hover:scale-[1.01]"
-              />
+            <div className="relative h-[480px] sm:h-[580px] md:h-[620px] flex items-center justify-center overflow-hidden perspective-deck">
+              {TESTIMONIAL_IMAGES.map((item, idx) => {
+                let diff = idx - currentIndex;
+                if (diff > total / 2) diff -= total;
+                if (diff < -total / 2) diff += total;
 
-              {/* Subtle hover prompt to enlarge */}
-              <div className="absolute inset-0 bg-black/35 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none rounded-3xl">
-                <span className="bg-[#2B160F]/95 text-[#FFF0D1] px-5 py-2.5 rounded-full border border-[#C99A45] flex items-center gap-2 font-bold text-xs sm:text-sm shadow-2xl backdrop-blur-sm">
-                  <ZoomIn className="w-4 h-4 text-[#C99A45]" />
-                  Clique para ampliar
-                </span>
-              </div>
+                const isCenter = diff === 0;
+                const isLeft = diff === -1;
+                const isRight = diff === 1;
+
+                let zIndex = 0;
+                let opacity = 0;
+                let scale = 0.6;
+                let rotateDeg = 0;
+
+                if (isCenter) {
+                  zIndex = 30;
+                  opacity = 1;
+                  scale = 1;
+                  rotateDeg = 0;
+                } else if (isLeft) {
+                  zIndex = 20;
+                  opacity = 0.75;
+                  scale = 0.88;
+                  rotateDeg = -5;
+                } else if (isRight) {
+                  zIndex = 20;
+                  opacity = 0.75;
+                  scale = 0.88;
+                  rotateDeg = 5;
+                } else {
+                  zIndex = 0;
+                  opacity = 0;
+                  scale = 0.5;
+                }
+
+                const imgSrc = customImages[item.id] || item.src;
+
+                return (
+                  <div
+                    key={item.id}
+                    onClick={() => {
+                      if (isCenter) {
+                        setIsZoomOpen(true);
+                      } else {
+                        setCurrentIndex(idx);
+                      }
+                    }}
+                    style={{
+                      zIndex,
+                      opacity,
+                      transform: `translateX(calc(-50% + ${diff} * clamp(85px, 22vw, 220px))) translateY(-50%) scale(${scale}) rotate(${rotateDeg}deg)`,
+                      transition: 'all 420ms cubic-bezier(0.25, 1, 0.5, 1)',
+                    }}
+                    className={`absolute top-1/2 left-1/2 w-[clamp(240px,55vw,390px)] rounded-3xl overflow-hidden cursor-pointer shadow-2xl border-2 transition-all group ${
+                      isCenter 
+                        ? 'border-[#C99A45] shadow-[0_20px_50px_rgba(0,0,0,0.7)] ring-2 ring-[#C99A45]/30' 
+                        : 'border-[#C99A45]/40 hover:opacity-100 hover:border-[#C99A45]'
+                    }`}
+                  >
+                    <div className="bg-[#4A2819] p-2.5 sm:p-4 rounded-3xl flex items-center justify-center relative">
+                      <img
+                        src={imgSrc}
+                        alt={item.alt}
+                        className="w-full h-[380px] sm:h-[480px] md:h-[530px] object-contain rounded-2xl shadow-inner pointer-events-none"
+                      />
+
+                      {/* Click to zoom badge on hover */}
+                      {isCenter && (
+                        <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-3xl">
+                          <span className="bg-[#2B160F]/95 text-[#FFF0D1] px-5 py-2.5 rounded-full border border-[#C99A45] flex items-center gap-2 font-bold text-xs sm:text-sm shadow-2xl backdrop-blur-sm">
+                            <ZoomIn className="w-4 h-4 text-[#C99A45]" />
+                            Clique para ampliar
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* Navigation Arrows */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  prevSlide();
+                }}
+                aria-label="Depoimento Anterior"
+                className="absolute left-1 sm:left-4 md:left-8 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-[#FFF0D1] text-[#21140F] hover:bg-white shadow-[0_8px_24px_rgba(0,0,0,0.5)] border border-[#C99A45] flex items-center justify-center cursor-pointer transition-transform hover:scale-110 active:scale-95 z-40"
+              >
+                <ChevronLeft className="w-6 h-6 stroke-[2.5]" />
+              </button>
+
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  nextSlide();
+                }}
+                aria-label="Próximo Depoimento"
+                className="absolute right-1 sm:right-4 md:right-8 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-[#FFF0D1] text-[#21140F] hover:bg-white shadow-[0_8px_24px_rgba(0,0,0,0.5)] border border-[#C99A45] flex items-center justify-center cursor-pointer transition-transform hover:scale-110 active:scale-95 z-40"
+              >
+                <ChevronRight className="w-6 h-6 stroke-[2.5]" />
+              </button>
             </div>
 
-            {/* Navigation Arrows */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                prevSlide();
-              }}
-              aria-label="Depoimento Anterior"
-              className="absolute left-0 sm:-left-6 md:-left-8 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#C99A45] text-[#21140F] hover:bg-[#d6aa57] flex items-center justify-center shadow-2xl border-2 border-[#8F6822] cursor-pointer transition-transform hover:scale-110 active:scale-95 z-30"
-            >
-              <ChevronLeft className="w-7 h-7 stroke-[3]" />
-            </button>
-
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                nextSlide();
-              }}
-              aria-label="Próximo Depoimento"
-              className="absolute right-0 sm:-right-6 md:-right-8 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#C99A45] text-[#21140F] hover:bg-[#d6aa57] flex items-center justify-center shadow-2xl border-2 border-[#8F6822] cursor-pointer transition-transform hover:scale-110 active:scale-95 z-30"
-            >
-              <ChevronRight className="w-7 h-7 stroke-[3]" />
-            </button>
+            {/* Elongated Pill Dots Indicator */}
+            <div className="flex items-center justify-center gap-1.5 mt-4 mb-2">
+              {TESTIMONIAL_IMAGES.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentIndex(i)}
+                  className={`h-2 rounded-full transition-all cursor-pointer ${
+                    i === currentIndex 
+                      ? 'w-7 bg-[#C99A45] shadow-sm' 
+                      : 'w-2 bg-[#FFF0D1]/30 hover:bg-[#FFF0D1]/60'
+                  }`}
+                  aria-label={`Ir para depoimento ${i + 1}`}
+                />
+              ))}
+            </div>
           </div>
 
           {/* Social Proof Trust Bar */}
@@ -226,7 +316,7 @@ export const HowItWorksTestimonials: React.FC<HowItWorksTestimonialsProps> = ({ 
 
           {/* Main Call to Action Button */}
           <div className="flex flex-col items-center gap-3">
-            <button onClick={onCtaClick} className="btn-primary">
+            <button onClick={onCtaClick} className="btn-primary cursor-pointer">
               QUERO MEU CAFÉ LITERÁRIO PRONTO
             </button>
             <div className="inline-flex items-center gap-1.5 text-xs text-[#F0D9AE]/85">
@@ -306,8 +396,8 @@ export const HowItWorksTestimonials: React.FC<HowItWorksTestimonialsProps> = ({ 
             }`}
           >
             <img
-              src={currentImage.src}
-              alt={currentImage.alt}
+              src={currentImgSrc}
+              alt={currentItem.alt}
               className={`object-contain rounded-xl mx-auto transition-all duration-300 ${
                 isMaxZoom ? 'w-auto max-h-none cursor-grab' : 'w-full h-auto max-h-[82vh]'
               }`}
