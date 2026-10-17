@@ -13,37 +13,37 @@ const PEÇAS_LIST: PieceItem[] = [
     id: '01_convite',
     tag: '#01',
     title: 'Convite personalizado',
-    image: '/imagens/pecas/peca_01.webp',
+    image: '/imagens/01_convite.webp',
   },
   {
     id: '02_cardapio',
     tag: '#02',
     title: 'Cardápio Literário de mesa',
-    image: '/imagens/pecas/peca_00.webp',
+    image: '/imagens/02_cardapio.webp',
   },
   {
     id: '03_crachas',
     tag: '#03',
     title: 'Crachás de Escritores & Leitores',
-    image: '/imagens/pecas/peca_03.webp',
+    image: '/imagens/03_crachas.webp',
   },
   {
     id: '04_certificado',
     tag: '#04',
     title: 'Certificado de Participação',
-    image: '/imagens/pecas/peca_19.webp',
+    image: '/imagens/04_certificado.webp',
   },
   {
     id: '05_plaquinhas',
     tag: '#05',
     title: 'Plaquinhas das Mesas dos Autores',
-    image: '/imagens/pecas/peca_04.webp',
+    image: '/imagens/05_plaquinhas.webp',
   },
   {
     id: '06_marcapaginas',
     tag: '#06',
     title: 'Marca-páginas de lembrança',
-    image: '/imagens/pecas/peca_18.webp',
+    image: '/imagens/06_marcapaginas.webp',
   },
 ];
 
@@ -52,37 +52,37 @@ const DECOR_LIST: PieceItem[] = [
     id: '07_painel',
     tag: '#07',
     title: 'Painel de boas-vindas',
-    image: '/imagens/pecas/peca_20.webp',
+    image: '/imagens/07_painel.webp',
   },
   {
     id: '08_bandeirolas',
     tag: '#08',
     title: 'Bandeirolas com versos célebres',
-    image: '/imagens/pecas/peca_21.webp',
+    image: '/imagens/08_bandeirolas.webp',
   },
   {
     id: '09_adesivos',
     tag: '#09',
     title: 'Adesivos literários para cadernos',
-    image: '/imagens/pecas/peca_38.webp',
+    image: '/imagens/09_adesivos.webp',
   },
   {
     id: '10_mesa',
     tag: '#10',
     title: 'Centros de mesa e bistrô',
-    image: '/imagens/pecas/peca_22.webp',
+    image: '/imagens/10_mesa.webp',
   },
   {
     id: '11_moldura',
     tag: '#11',
     title: 'Moldura para fotos do evento',
-    image: '/imagens/pecas/peca_27.webp',
+    image: '/imagens/11_moldura.webp',
   },
   {
     id: '12_totens',
     tag: '#12',
     title: 'Totens e displays decorativos',
-    image: '/imagens/pecas/peca_26.webp',
+    image: '/imagens/12_totens.webp',
   },
 ];
 
@@ -105,6 +105,7 @@ const CoverflowDeck: React.FC<CoverflowDeckProps> = ({
 }) => {
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const n = items.length;
+  const currentItem = items[currentIndex];
 
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchStartX(e.targetTouches[0].clientX);
@@ -121,13 +122,13 @@ const CoverflowDeck: React.FC<CoverflowDeckProps> = ({
   return (
     <div className="w-full">
       <div
-        className="cf"
+        className="cf relative"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
         <button
           aria-label="Ver anterior"
-          className="cf-nav prev cursor-pointer"
+          className="cf-nav prev cursor-pointer z-30"
           onClick={onPrev}
         >
           ‹
@@ -137,26 +138,27 @@ const CoverflowDeck: React.FC<CoverflowDeckProps> = ({
           {items.map((item, i) => {
             const diff = (i - currentIndex + n) % n;
             let posClass = '';
-            if (diff === 0) posClass = 'pos-center';
+            const isCenter = diff === 0;
+            if (isCenter) posClass = 'pos-center';
             else if (diff === 1) posClass = 'pos-right';
             else if (diff === n - 1) posClass = 'pos-left';
 
-            const imgSrc = customImages[item.id] || item.image;
+            const imgSrc = customImages[item.id] || getSiteImage(item.id, item.image);
 
             return (
               <div
                 key={item.id}
                 className={`cf-slide ${posClass}`}
                 onClick={() => {
-                  if (diff !== 0) onSelect(i);
+                  if (!isCenter) onSelect(i);
                 }}
               >
-                <div className="relative overflow-hidden rounded-xl">
+                <div className="relative overflow-hidden rounded-xl border border-[#C99A45]/30 shadow-[0_18px_30px_rgba(0,0,0,0.4)]">
                   <img
                     alt={item.title}
                     src={imgSrc}
                     loading={Math.abs(diff) <= 2 ? 'eager' : 'lazy'}
-                    className="w-full h-auto block rounded-xl shadow-[0_18px_30px_rgba(0,0,0,0.4)]"
+                    className="w-full h-auto block rounded-xl transition-transform duration-300 group-hover:scale-[1.01]"
                   />
                 </div>
               </div>
@@ -166,7 +168,7 @@ const CoverflowDeck: React.FC<CoverflowDeckProps> = ({
 
         <button
           aria-label="Ver próximo"
-          className="cf-nav next cursor-pointer"
+          className="cf-nav next cursor-pointer z-30"
           onClick={onNext}
         >
           ›
@@ -175,7 +177,7 @@ const CoverflowDeck: React.FC<CoverflowDeckProps> = ({
 
       {/* Título da peça ativa */}
       <p className="cf-caption font-serif-display font-black text-xl sm:text-2xl text-[#21140F] mt-3 min-h-[30px] text-center">
-        {items[currentIndex].title}
+        {currentItem.title}
       </p>
 
       {/* Bolinhas indicadoras */}
@@ -196,7 +198,7 @@ export const MaterialsShowcase: React.FC = () => {
   const [pieceIdx, setPieceIdx] = useState(0);
   const [decorIdx, setDecorIdx] = useState(0);
 
-  // Carrega e mantém as imagens que o usuário salvou ou padrões
+  // Mantém todas as imagens de alta qualidade salvas e padrão
   const [customImages] = useState<Record<string, string>>(() => {
     const loaded: Record<string, string> = {};
     [...PEÇAS_LIST, ...DECOR_LIST].forEach((item) => {
@@ -238,7 +240,7 @@ export const MaterialsShowcase: React.FC = () => {
           </p>
         </div>
 
-        {/* 1. Carrossel 1 (de cima): Peças do seu Café Literário */}
+        {/* 1. Carrossel 1 (de cima): Peças do seu Café Literário (6 peças) */}
         <div className="pt-2 pb-6">
           <CoverflowDeck
             items={PEÇAS_LIST}
@@ -250,7 +252,7 @@ export const MaterialsShowcase: React.FC = () => {
           />
         </div>
 
-        {/* 2. Carrossel 2 (de baixo): Decoração para o ambiente */}
+        {/* 2. Carrossel 2 (de baixo): Decoração para o ambiente (6 itens) */}
         <div className="pt-8 pb-4 border-t border-[#C99A45]/20">
           <div className="text-center mb-6">
             <h3 className="font-serif-display font-black text-2xl sm:text-4xl text-[#21140F] mb-2">

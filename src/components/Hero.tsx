@@ -21,7 +21,7 @@ export const Hero: React.FC<HeroProps> = ({ onCtaClick }) => {
   const cupRef = useRef<SVGSVGElement>(null);
 
   const [heroImg] = useState<string>(() =>
-    getSiteImage('hero', '/hero.webp')
+    getSiteImage('hero', '/imagens/hero.webp')
   );
 
   useEffect(() => {
