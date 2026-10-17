@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Café Literário Pronto — Roteiro de Sarau, Peças e Decoração Escolar</title>
+    <meta name="description" content="Roteiro completo de sarau, peças para imprimir e decoração pronta para montar o Café Literário mais inesquecível da sua escola." />
+    <meta property="og:title" content="Café Literário Pronto — Roteiro de Sarau, Peças e Decoração Escolar" />
+    <meta property="og:description" content="Roteiro completo de sarau, peças para imprimir e decoração pronta para montar o Café Literário mais inesquecível da sua escola." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Meta Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '38863818239931004');
+      fbq('track', 'PageView');
+    </script>
+    <noscript>
+      <img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=38863818239931004&ev=PageView&noscript=1"
+      />
+    </noscript>
+    <!-- End Meta Pixel Code -->
+
+    <!-- UTM Tracker & Persistence Script -->
+    <script>
+      (function() {
+        var utmParams = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'src', 'sck'];
+        
+        function getQueryParam(name) {
+          var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+          return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+        }
+
+        // Save UTMs to localStorage and sessionStorage
+        try {
+          utmParams.forEach(function(param) {
+            var value = getQueryParam(param);
+            if (value) {
+              sessionStorage.setItem(param, value);
+              localStorage.setItem(param, value);
+            }
+          });
+        } catch(e) {}
+
+        // Helper to append UTM parameters to any URL
+        window.appendCurrentUtms = function(url) {
+          if (!url || typeof url !== 'string') return url;
+          try {
+            var isRelative = !url.startsWith('http://') && !url.startsWith('https://');
+            var u = new URL(url, window.location.origin);
+            utmParams.forEach(function(param) {
+              var val = getQueryParam(param) || sessionStorage.getItem(param) || localStorage.getItem(param);
+              if (val && !u.searchParams.has(param)) {
+                u.searchParams.set(param, val);
+              }
+            });
+            return isRelative ? u.pathname + u.search + u.hash : u.toString();
+          } catch(e) {
+            return url;
+          }
+        };
+
+        // Automatically pass UTMs to all checkout links
+        function updateAllLinks() {
+          var links = document.querySelectorAll('a[href]');
+          links.forEach(function(a) {
+            var href = a.getAttribute('href');
+            if (href && !href.startsWith('#') && !href.startsWith('javascript:') && !href.startsWith('tel:') && !href.startsWith('mailto:')) {
+              var updated = window.appendCurrentUtms(href);
+              if (updated && updated !== href) {
+                a.setAttribute('href', updated);
+              }
+            }
+          });
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', updateAllLinks);
+        } else {
+          updateAllLinks();
+        }
+        setInterval(updateAllLinks, 2000);
+      })();
+    </script>
+    <!-- End UTM Tracker Script -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800;9..144,900&family=Figtree:wght@400;500;600;700;800;900&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

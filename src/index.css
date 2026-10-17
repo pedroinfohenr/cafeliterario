@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+:root {
+  /* Paleta Oficial Café Literário Vintage Premium */
+  --bg-primary: #2B160F;       /* Marrom escuro fundo principal */
+  --bg-secondary: #4A2819;     /* Marrom espresso seções secundárias */
+  --card-parchment: #F0D9AE;   /* Bege pergaminho nos cards */
+  --cream-vintage: #FFF0D1;    /* Creme vintage em áreas claras */
+  --gold-aged: #C99A45;        /* Dourado envelhecido botões/destaques */
+  --gold-deep: #8F6822;        /* Sombra 3D botões */
+  --wine-classic: #692E24;     /* Vinho clássico em detalhes */
+  --wine-deep: #441A13;        /* Vinho escuro */
+  --text-dark: #21140F;        /* Marrom quase preto sobre fundos claros */
+  --text-light: #FFF0D1;       /* Creme vintage sobre fundos escuros */
+  --text-muted: #8C6A54;       /* Texto secundário elegante */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Figtree', system-ui, -apple-system, sans-serif !important;
+  background-color: var(--bg-primary);
+  color: var(--text-light);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6, .font-serif-display {
+  font-family: 'Fraunces', Georgia, serif !important;
+  font-weight: 900 !important;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+}
+
+.hand, .font-script {
+  font-family: 'Caveat', cursive !important;
+  font-weight: 700 !important;
+}
+
+/* ---------- Botão de Alta Conversão Dourado Envelhecido ---------- */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--gold-aged);
+  color: var(--text-dark);
+  font-weight: 800;
+  font-size: 18px;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  padding: 18px 36px;
+  border-radius: 999px;
+  box-shadow: 0 6px 0 var(--gold-deep), 0 14px 28px rgba(0, 0, 0, 0.35);
+  transition: transform 0.15s, box-shadow 0.15s;
+  border: 0;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-primary:hover {
+  transform: translateY(2px);
+  box-shadow: 0 4px 0 var(--gold-deep), 0 10px 20px rgba(0, 0, 0, 0.35);
+}
+
+.btn-primary:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 var(--gold-deep);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--text-dark);
+  border: 2px solid var(--text-dark);
+  font-weight: 800;
+  font-size: 15px;
+  text-transform: uppercase;
+  padding: 14px 24px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--text-dark);
+  color: var(--cream-vintage);
+}
+
+/* ---------- Toldo Vintage Clássico (Vinho e Creme) ---------- */
+.awning {
+  height: 42px;
+  background: repeating-linear-gradient(90deg, var(--wine-classic) 0 50px, var(--cream-vintage) 50px 100px);
+  position: relative;
+}
+
+.awning::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -14px;
+  height: 14px;
+  background: radial-gradient(circle at 25px 0, var(--wine-classic) 24px, transparent 25px) 0 0/100px 14px repeat-x,
+              radial-gradient(circle at 75px 0, var(--cream-vintage) 24px, transparent 25px) 0 0/100px 14px repeat-x;
+  z-index: 10;
+}
+
+/* Marquee animado */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-reverse {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}
+
+.animate-marquee-reverse {
+  display: flex;
+  width: max-content;
+  animation: marquee-reverse 35s linear infinite;
+}
+
+.animate-marquee:hover,
+.animate-marquee-reverse:hover {
+  animation-play-state: paused;
+}
+

@@ -1,0 +1,6 @@
+{
+  "name": "Café Literário Pronto",
+  "description": "Roteiro completo de sarau, peças para imprimir e decoração pronta para montar o Café Literário mais inesquecível da sua escola.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
