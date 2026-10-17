@@ -1,38 +1,11 @@
 import React, { useState } from 'react';
 import { getSiteImage } from '../utils/imageStorage';
 
-import conviteWebp from '../imagens/01_convite.webp';
-import convitePng from '../imagens/01_convite.png';
-import cardapioWebp from '../imagens/02_cardapio.webp';
-import cardapioPng from '../imagens/02_cardapio.png';
-import crachasWebp from '../imagens/03_crachas.webp';
-import crachasPng from '../imagens/03_crachas.png';
-import certificadoWebp from '../imagens/04_certificado.webp';
-import certificadoPng from '../imagens/04_certificado.png';
-import plaquinhasWebp from '../imagens/05_plaquinhas.webp';
-import plaquinhasPng from '../imagens/05_plaquinhas.png';
-import marcapaginasWebp from '../imagens/06_marcapaginas.webp';
-import marcapaginasPng from '../imagens/06_marcapaginas.png';
-
-import painelWebp from '../imagens/07_painel.webp';
-import painelPng from '../imagens/07_painel.png';
-import bandeirolasWebp from '../imagens/08_bandeirolas.webp';
-import bandeirolasPng from '../imagens/08_bandeirolas.png';
-import adesivosWebp from '../imagens/09_adesivos.webp';
-import adesivosPng from '../imagens/09_adesivos.png';
-import mesaWebp from '../imagens/10_mesa.webp';
-import mesaPng from '../imagens/10_mesa.png';
-import molduraWebp from '../imagens/11_moldura.webp';
-import molduraPng from '../imagens/11_moldura.png';
-import totensWebp from '../imagens/12_totens.webp';
-import totensPng from '../imagens/12_totens.png';
-
 interface PieceItem {
   id: string;
   tag: string;
   title: string;
   image: string;
-  fallback: string;
 }
 
 const PEÇAS_LIST: PieceItem[] = [
@@ -40,43 +13,37 @@ const PEÇAS_LIST: PieceItem[] = [
     id: '01_convite',
     tag: '#01',
     title: 'Convite personalizado',
-    image: conviteWebp,
-    fallback: convitePng,
+    image: '/imagens/01_convite.webp',
   },
   {
     id: '02_cardapio',
     tag: '#02',
     title: 'Cardápio Literário de mesa',
-    image: cardapioWebp,
-    fallback: cardapioPng,
+    image: '/imagens/02_cardapio.webp',
   },
   {
     id: '03_crachas',
     tag: '#03',
     title: 'Crachás de Escritores & Leitores',
-    image: crachasWebp,
-    fallback: crachasPng,
+    image: '/imagens/03_crachas.webp',
   },
   {
     id: '04_certificado',
     tag: '#04',
     title: 'Certificado de Participação',
-    image: certificadoWebp,
-    fallback: certificadoPng,
+    image: '/imagens/04_certificado.webp',
   },
   {
     id: '05_plaquinhas',
     tag: '#05',
     title: 'Plaquinhas das Mesas dos Autores',
-    image: plaquinhasWebp,
-    fallback: plaquinhasPng,
+    image: '/imagens/05_plaquinhas.webp',
   },
   {
     id: '06_marcapaginas',
     tag: '#06',
     title: 'Marca-páginas de lembrança',
-    image: marcapaginasWebp,
-    fallback: marcapaginasPng,
+    image: '/imagens/06_marcapaginas.webp',
   },
 ];
 
@@ -85,43 +52,37 @@ const DECOR_LIST: PieceItem[] = [
     id: '07_painel',
     tag: '#07',
     title: 'Painel de boas-vindas',
-    image: painelWebp,
-    fallback: painelPng,
+    image: '/imagens/07_painel.webp',
   },
   {
     id: '08_bandeirolas',
     tag: '#08',
     title: 'Bandeirolas com versos célebres',
-    image: bandeirolasWebp,
-    fallback: bandeirolasPng,
+    image: '/imagens/08_bandeirolas.webp',
   },
   {
     id: '09_adesivos',
     tag: '#09',
     title: 'Adesivos literários para cadernos',
-    image: adesivosWebp,
-    fallback: adesivosPng,
+    image: '/imagens/09_adesivos.webp',
   },
   {
     id: '10_mesa',
     tag: '#10',
     title: 'Centros de mesa e bistrô',
-    image: mesaWebp,
-    fallback: mesaPng,
+    image: '/imagens/10_mesa.webp',
   },
   {
     id: '11_moldura',
     tag: '#11',
     title: 'Moldura para fotos do evento',
-    image: molduraWebp,
-    fallback: molduraPng,
+    image: '/imagens/11_moldura.webp',
   },
   {
     id: '12_totens',
     tag: '#12',
     title: 'Totens e displays decorativos',
-    image: totensWebp,
-    fallback: totensPng,
+    image: '/imagens/12_totens.webp',
   },
 ];
 
@@ -196,12 +157,6 @@ const CoverflowDeck: React.FC<CoverflowDeckProps> = ({
                   <img
                     alt={item.title}
                     src={imgSrc}
-                    onError={(e) => {
-                      const target = e.currentTarget;
-                      if (item.fallback && target.src !== item.fallback) {
-                        target.src = item.fallback;
-                      }
-                    }}
                     loading={Math.abs(diff) <= 2 ? 'eager' : 'lazy'}
                     className="w-full h-auto block rounded-xl transition-transform duration-300 group-hover:scale-[1.01]"
                   />
