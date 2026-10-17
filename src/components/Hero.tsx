@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Feather, ShieldCheck } from 'lucide-react';
 import { getSiteImage } from '../utils/imageStorage';
+import heroWebp from '../imagens/hero.webp';
+import heroPng from '../imagens/hero.png';
 
 interface HeroProps {
   onCtaClick: () => void;
@@ -20,8 +22,8 @@ export const Hero: React.FC<HeroProps> = ({ onCtaClick }) => {
   const stackRef = useRef<HTMLDivElement>(null);
   const cupRef = useRef<SVGSVGElement>(null);
 
-  const [heroImg] = useState<string>(() =>
-    getSiteImage('hero', '/imagens/hero.webp')
+  const [heroImg, setHeroImg] = useState<string>(() =>
+    getSiteImage('hero', heroWebp)
   );
 
   useEffect(() => {
@@ -196,10 +198,9 @@ export const Hero: React.FC<HeroProps> = ({ onCtaClick }) => {
               className="mock-product rounded-2xl"
               alt="Kit Café Literário Vintage Completo"
               src={heroImg}
-              onError={(e) => {
-                const img = e.currentTarget;
-                if (!img.src.endsWith('/hero.png')) {
-                  img.src = '/hero.png';
+              onError={() => {
+                if (heroImg !== heroPng) {
+                  setHeroImg(heroPng);
                 }
               }}
             />
