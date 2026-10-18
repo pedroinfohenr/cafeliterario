@@ -6,7 +6,7 @@ import {
   ChevronRight, 
   ZoomIn, 
   ZoomOut, 
-  Coffee 
+  Coffee
 } from 'lucide-react';
 import { FloatingCoffeeElements } from './FloatingCoffeeElements';
 import { getSiteImage } from '../utils/imageStorage';

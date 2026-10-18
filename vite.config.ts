@@ -34,7 +34,7 @@ function imageUploadPlugin(): Plugin {
               fs.writeFileSync(targetSrc, fileBuffer);
               fs.writeFileSync(targetPub, fileBuffer);
 
-              if (filename === 'hero.webp' || filename === 'hero.png') {
+              if (filename === 'hero.png') {
                 fs.writeFileSync(path.resolve(__dirname, 'public', filename), fileBuffer);
               }
 

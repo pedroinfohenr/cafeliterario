@@ -18,10 +18,9 @@ const QUOTES = [
 export const Hero: React.FC<HeroProps> = ({ onCtaClick }) => {
   const sceneRef = useRef<HTMLDivElement>(null);
   const stackRef = useRef<HTMLDivElement>(null);
-  const cupRef = useRef<SVGSVGElement>(null);
 
   const [heroImg] = useState<string>(() =>
-    getSiteImage('hero', '/imagens/hero.webp')
+    getSiteImage('hero', '/hero.png')
   );
 
   useEffect(() => {
@@ -34,8 +33,8 @@ export const Hero: React.FC<HeroProps> = ({ onCtaClick }) => {
       const r = scene.getBoundingClientRect();
       const x = (e.clientX - r.left) / r.width - 0.5;
       const y = (e.clientY - r.top) / r.height - 0.5;
-      stack.style.setProperty('--ry', `${x * 20}deg`);
-      stack.style.setProperty('--rx', `${-y * 14}deg`);
+      stack.style.setProperty('--ry', `${x * 16}deg`);
+      stack.style.setProperty('--rx', `${-y * 12}deg`);
     };
 
     const handlePointerLeave = () => {
@@ -48,7 +47,7 @@ export const Hero: React.FC<HeroProps> = ({ onCtaClick }) => {
 
     const handleScroll = () => {
       const y = Math.min(window.scrollY, 600) / 600;
-      stack.style.setProperty('--rx', `${y * 14}deg`);
+      stack.style.setProperty('--rx', `${y * 10}deg`);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
 
@@ -56,38 +55,6 @@ export const Hero: React.FC<HeroProps> = ({ onCtaClick }) => {
       scene.removeEventListener('pointermove', handlePointerMove);
       scene.removeEventListener('pointerleave', handlePointerLeave);
       window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  useEffect(() => {
-    const cup = cupRef.current;
-    if (!cup) return;
-
-    const timer = setTimeout(() => {
-      cup.classList.add('play');
-    }, 450);
-
-    const handleClick = () => {
-      cup.classList.remove('play');
-      void cup.getBoundingClientRect();
-      cup.classList.add('play');
-    };
-
-    cup.addEventListener('click', handleClick);
-
-    const interval = setInterval(() => {
-      const r = cup.getBoundingClientRect();
-      if (r.top < window.innerHeight && r.bottom > 0) {
-        cup.classList.remove('play');
-        void cup.getBoundingClientRect();
-        cup.classList.add('play');
-      }
-    }, 16000);
-
-    return () => {
-      clearTimeout(timer);
-      clearInterval(interval);
-      cup.removeEventListener('click', handleClick);
     };
   }, []);
 
@@ -118,13 +85,18 @@ export const Hero: React.FC<HeroProps> = ({ onCtaClick }) => {
       <div className="awning" aria-hidden="true" />
 
       {/* Floating Coffee Beans in Hero */}
-      <div className="beans" aria-hidden="true">
+      <div className="floating-beans" aria-hidden="true">
         {[
-          { left: '8%', top: '65%', dur: '12s', del: '-2s', s: 0.9 },
-          { left: '22%', top: '75%', dur: '15s', del: '-7s', s: 0.7 },
-          { left: '38%', top: '60%', dur: '11s', del: '-4s', s: 1.1 },
-          { left: '62%', top: '80%', dur: '14s', del: '-9s', s: 0.8 },
-          { left: '78%', top: '70%', dur: '13s', del: '-3s', s: 1.0 },
+          { left: '4%', top: '15%', dur: '12s', del: '0s', s: 0.9 },
+          { left: '10%', top: '70%', dur: '15s', del: '-3s', s: 1.1 },
+          { left: '22%', top: '45%', dur: '18s', del: '-7s', s: 0.75 },
+          { left: '78%', top: '22%', dur: '14s', del: '-2s', s: 1.0 },
+          { left: '88%', top: '65%', dur: '17s', del: '-5s', s: 0.85 },
+          { left: '94%', top: '35%', dur: '13s', del: '-9s', s: 1.2 },
+          { left: '50%', top: '8%', dur: '20s', del: '-4s', s: 0.7 },
+          { left: '16%', top: '88%', dur: '16s', del: '-8s', s: 0.95 },
+          { left: '82%', top: '80%', dur: '19s', del: '-1s', s: 1.05 },
+          { left: '6%', top: '40%', dur: '15s', del: '-11s', s: 0.8 },
           { left: '90%', top: '85%', dur: '16s', del: '-6s', s: 0.75 },
         ].map((b, i) => (
           <span
@@ -183,17 +155,17 @@ export const Hero: React.FC<HeroProps> = ({ onCtaClick }) => {
           </span>
         </div>
 
-        {/* 3D Mockup Scene with Interactive Cup & Cookies */}
-        <div ref={sceneRef} className="mock-scene mb-6" id="mockScene">
+        {/* 3D Mockup Scene ampliada, limpa, sem xícara nem cookies */}
+        <div ref={sceneRef} className="mock-scene max-w-2xl sm:max-w-3xl mx-auto mb-8" id="mockScene">
           <div className="mock-glow" aria-hidden="true" />
 
-          {/* Clean Mockup Stack */}
+          {/* Mockup Stack */}
           <div
             ref={stackRef}
             className="mock-stack relative"
           >
             <img
-              className="mock-product rounded-2xl"
+              className="mock-product rounded-2xl w-full h-auto max-h-[580px] object-contain mx-auto"
               alt="Kit Café Literário Vintage Completo"
               src={heroImg}
               onError={(e) => {
@@ -209,122 +181,7 @@ export const Hero: React.FC<HeroProps> = ({ onCtaClick }) => {
           <span className="mock-tag font-script">
             Tudo pronto pra imprimir
           </span>
-
-          {/* Interactive SVG Coffee Cup with Steamed Milk Jug & Blooming Heart */}
-          <svg
-            ref={cupRef}
-            className="cup-svg"
-            id="heroCup"
-            viewBox="0 0 220 230"
-            role="img"
-            aria-label="Xícara de café com leite artesanal"
-          >
-            <defs>
-              <linearGradient id="gCup" x1="0" x2="1">
-                <stop offset="0" stopColor="#E9DCC6" />
-                <stop offset=".45" stopColor="#FFFDF8" />
-                <stop offset="1" stopColor="#D9C7A8" />
-              </linearGradient>
-              <linearGradient id="gJug" x1="0" x2="1">
-                <stop offset="0" stopColor="#9AA3AB" />
-                <stop offset=".4" stopColor="#F1F4F6" />
-                <stop offset="1" stopColor="#A7B0B8" />
-              </linearGradient>
-              <radialGradient id="gCoffee" cx=".5" cy=".4">
-                <stop offset="0" stopColor="#5A331D" />
-                <stop offset=".7" stopColor="#3A1E10" />
-                <stop offset="1" stopColor="#241108" />
-              </radialGradient>
-              <filter id="crema" x="-10%" y="-10%" width="120%" height="120%">
-                <feTurbulence type="fractalNoise" baseFrequency=".08" numOctaves="2" result="noise" />
-                <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
-              </filter>
-            </defs>
-
-            {/* Steaming jug pouring milk */}
-            <g className="jug-layer">
-              <g className="jug">
-                <path d="M12 28 C8 48 14 62 30 66" fill="none" stroke="#7A838B" strokeWidth="5" strokeLinecap="round" />
-                <path d="M26 14 L68 18 C74 18 78 22 76 30 L66 66 C64 74 58 78 50 78 L32 78 C24 78 18 72 20 64 L26 14 Z" fill="url(#gJug)" stroke="#4A525A" strokeWidth="2" />
-                <path d="M68 18 L82 24 L72 32 Z" fill="#D3DBE2" stroke="#4A525A" strokeWidth="1.5" />
-                <ellipse cx="46" cy="20" rx="20" ry="6" fill="#4A525A" opacity=".35" />
-                <path d="M34 22 L38 68" stroke="#FFF" strokeWidth="3" opacity=".6" strokeLinecap="round" />
-              </g>
-              <path className="milk-stream" d="M168 28 C158 52 144 76 136 108" fill="none" stroke="#FFFDF8" strokeWidth="7" strokeLinecap="round" />
-              <ellipse className="pour-splash" cx="136" cy="110" rx="14" ry="4" fill="#FFFDF8" opacity=".8" />
-            </g>
-
-            {/* Cup Shadow */}
-            <ellipse cx="110" cy="204" rx="92" ry="14" fill="rgba(0,0,0,.35)" />
-            {/* Saucer */}
-            <ellipse cx="110" cy="192" rx="88" ry="16" fill="#D9C7A8" stroke="#C4AD88" strokeWidth="2" />
-            <ellipse cx="110" cy="190" rx="78" ry="12" fill="#EFE5D2" />
-            <ellipse cx="110" cy="188" rx="52" ry="7" fill="#C4AD88" opacity=".5" />
-            {/* Handle */}
-            <path d="M168 126 C202 124 206 166 164 170" fill="none" stroke="url(#gCup)" strokeWidth="16" strokeLinecap="round" />
-            <path d="M168 126 C194 125 198 165 166 168" fill="none" stroke="#D9C7A8" strokeWidth="6" strokeLinecap="round" />
-            {/* Body */}
-            <path d="M42 108 C44 158 64 184 110 184 C156 184 176 158 178 108 Z" fill="url(#gCup)" stroke="#C4AD88" strokeWidth="2" />
-            <path d="M52 118 C56 156 72 176 110 178" fill="none" stroke="#FFF" strokeWidth="4" opacity=".5" strokeLinecap="round" />
-            {/* Rim & Coffee */}
-            <ellipse cx="110" cy="108" rx="68" ry="18" fill="#D9C7A8" stroke="#C4AD88" strokeWidth="2" />
-            <ellipse cx="110" cy="108" rx="64" ry="15" fill="#EFE5D2" />
-            <ellipse cx="110" cy="109" rx="58" ry="12" fill="url(#gCoffee)" />
-            <ellipse cx="110" cy="109" rx="56" ry="11" fill="#C48046" opacity=".22" filter="url(#crema)" />
-
-            {/* Blooming Heart Latte Art */}
-            <g className="art">
-              <path
-                className="heart-shape"
-                d="M110 115 C108 111 96 102 96 98 C96 94 99 91 103 91 C106 91 109 93 110 95 C111 93 114 91 117 91 C121 91 124 94 124 98 C124 102 112 111 110 115 Z"
-                fill="#FFFDF8"
-                stroke="#EBD9BA"
-                strokeWidth="1.2"
-              />
-              <path d="M110 92 L110 116" stroke="#C48046" strokeWidth="1.2" strokeLinecap="round" opacity=".7" />
-            </g>
-
-            {/* Dynamic Rising Steam Ribbons */}
-            <g className="steam" fill="none" stroke="#FFFDF8" strokeWidth="3" strokeLinecap="round">
-              <path className="s1" d="M96 92 C90 76 102 64 94 48 C88 36 94 24 90 14" opacity=".6" />
-              <path className="s2" d="M110 90 C116 72 106 60 114 42 C120 28 112 18 116 8" opacity=".8" />
-              <path className="s3" d="M124 92 C130 78 118 66 126 50 C132 38 124 26 128 16" opacity=".55" />
-            </g>
-          </svg>
-
-          {/* Floating Cookies in Mockup Scene */}
-          <svg className="cookie c1" viewBox="0 0 90 90" aria-hidden="true">
-            <ellipse cx="46" cy="48" rx="38" ry="36" fill="#C98A45" />
-            <ellipse cx="44" cy="44" rx="38" ry="36" fill="#EBC284" />
-            <g fill="#5A331D">
-              <circle cx="32" cy="30" r="4.5" />
-              <circle cx="56" cy="32" r="5" />
-              <circle cx="42" cy="46" r="4" />
-              <circle cx="62" cy="52" r="4.5" />
-              <circle cx="28" cy="56" r="4" />
-              <circle cx="48" cy="64" r="3.5" />
-            </g>
-          </svg>
-
-          <svg className="cookie c2" viewBox="0 0 100 70" aria-hidden="true">
-            <rect x="4" y="6" width="92" height="58" rx="10" fill="#C98A45" />
-            <rect x="4" y="2" width="92" height="58" rx="10" fill="#EBC284" />
-            <rect x="12" y="10" width="76" height="42" rx="6" fill="none" stroke="#D4A262" strokeWidth="2" strokeDasharray="4 5" />
-            <g fill="#C98A45">
-              <circle cx="30" cy="24" r="2.5" />
-              <circle cx="50" cy="24" r="2.5" />
-              <circle cx="70" cy="24" r="2.5" />
-              <circle cx="30" cy="40" r="2.5" />
-              <circle cx="50" cy="40" r="2.5" />
-              <circle cx="70" cy="40" r="2.5" />
-            </g>
-          </svg>
         </div>
-
-        {/* Product Name Badge */}
-        <p className="font-serif-display font-black text-xl sm:text-2xl text-[#C99A45] mb-6">
-          Kit Café Literário Vintage
-        </p>
 
         {/* CTA Button in Aged Gold with Shine & Milk Splash */}
         <div className="flex flex-col items-center gap-3">
@@ -364,12 +221,14 @@ export const Hero: React.FC<HeroProps> = ({ onCtaClick }) => {
 
       {/* Infinite Scrolling Marquee with Literary Quotes from Copy */}
       <div className="w-full bg-[#21140F] border-t-2 border-b-2 border-[#C99A45]/40 py-3.5 overflow-hidden whitespace-nowrap relative select-none">
-        <div className="inline-flex items-center gap-6 animate-marquee font-serif italic text-xs sm:text-sm text-[#F0D9AE]">
-          {[...QUOTES, ...QUOTES].map((quote, idx) => (
-            <React.Fragment key={idx}>
-              <span className="hover:text-[#FFF0D1] transition-colors">{quote}</span>
-              <span className="text-[#C99A45] font-black not-italic text-xs">✦</span>
-            </React.Fragment>
+        <div className="inline-flex gap-8 animate-marquee">
+          {[...QUOTES, ...QUOTES, ...QUOTES].map((quote, i) => (
+            <span key={i} className="inline-flex items-center gap-3 text-sm font-semibold tracking-wide text-[#F0D9AE]/90">
+              <span className="text-[#C99A45] font-serif-display font-bold">“</span>
+              <span className="italic">{quote}</span>
+              <span className="text-[#C99A45] font-serif-display font-bold">”</span>
+              <span className="text-[#C99A45] text-xs">◆</span>
+            </span>
           ))}
         </div>
       </div>

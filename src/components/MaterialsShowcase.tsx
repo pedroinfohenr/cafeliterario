@@ -13,37 +13,37 @@ const PEÇAS_LIST: PieceItem[] = [
     id: '01_convite',
     tag: '#01',
     title: 'Convite personalizado',
-    image: '/imagens/01_convite.webp',
+    image: '/imagens/01_convite.png',
   },
   {
     id: '02_cardapio',
     tag: '#02',
     title: 'Cardápio Literário de mesa',
-    image: '/imagens/02_cardapio.webp',
+    image: '/imagens/02_cardapio.png',
   },
   {
     id: '03_crachas',
     tag: '#03',
     title: 'Crachás de Escritores & Leitores',
-    image: '/imagens/03_crachas.webp',
+    image: '/imagens/03_crachas.png',
   },
   {
     id: '04_certificado',
     tag: '#04',
     title: 'Certificado de Participação',
-    image: '/imagens/04_certificado.webp',
+    image: '/imagens/04_certificado.png',
   },
   {
     id: '05_plaquinhas',
     tag: '#05',
     title: 'Plaquinhas das Mesas dos Autores',
-    image: '/imagens/05_plaquinhas.webp',
+    image: '/imagens/05_plaquinhas.png',
   },
   {
     id: '06_marcapaginas',
     tag: '#06',
     title: 'Marca-páginas de lembrança',
-    image: '/imagens/06_marcapaginas.webp',
+    image: '/imagens/06_marcapaginas.png',
   },
 ];
 
@@ -52,37 +52,37 @@ const DECOR_LIST: PieceItem[] = [
     id: '07_painel',
     tag: '#07',
     title: 'Painel de boas-vindas',
-    image: '/imagens/07_painel.webp',
+    image: '/imagens/07_painel.png',
   },
   {
     id: '08_bandeirolas',
     tag: '#08',
     title: 'Bandeirolas com versos célebres',
-    image: '/imagens/08_bandeirolas.webp',
+    image: '/imagens/08_bandeirolas.png',
   },
   {
     id: '09_adesivos',
     tag: '#09',
     title: 'Adesivos literários para cadernos',
-    image: '/imagens/09_adesivos.webp',
+    image: '/imagens/09_adesivos.png',
   },
   {
     id: '10_mesa',
     tag: '#10',
     title: 'Centros de mesa e bistrô',
-    image: '/imagens/10_mesa.webp',
+    image: '/imagens/10_mesa.png',
   },
   {
     id: '11_moldura',
     tag: '#11',
     title: 'Moldura para fotos do evento',
-    image: '/imagens/11_moldura.webp',
+    image: '/imagens/11_moldura.png',
   },
   {
     id: '12_totens',
     tag: '#12',
     title: 'Totens e displays decorativos',
-    image: '/imagens/12_totens.webp',
+    image: '/imagens/12_totens.png',
   },
 ];
 
@@ -157,6 +157,12 @@ const CoverflowDeck: React.FC<CoverflowDeckProps> = ({
                   <img
                     alt={item.title}
                     src={imgSrc}
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (target.src !== item.image) {
+                        target.src = item.image;
+                      }
+                    }}
                     loading={Math.abs(diff) <= 2 ? 'eager' : 'lazy'}
                     className="w-full h-auto block rounded-xl transition-transform duration-300 group-hover:scale-[1.01]"
                   />
@@ -198,7 +204,7 @@ export const MaterialsShowcase: React.FC = () => {
   const [pieceIdx, setPieceIdx] = useState(0);
   const [decorIdx, setDecorIdx] = useState(0);
 
-  // Mantém todas as imagens de alta qualidade salvas e padrão
+  // Mantém todas as imagens salvas do usuário e padrão
   const [customImages] = useState<Record<string, string>>(() => {
     const loaded: Record<string, string> = {};
     [...PEÇAS_LIST, ...DECOR_LIST].forEach((item) => {

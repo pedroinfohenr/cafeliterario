@@ -232,8 +232,8 @@ h1, h2, h3, h4, h5, h6, .font-serif-display {
 /* ---------- Mockup Scene 3D com Parallax ---------- */
 .mock-scene {
   position: relative;
-  max-width: 540px;
-  margin: 6px auto 34px;
+  max-width: 760px;
+  margin: 10px auto 36px;
   perspective: 1200px;
   touch-action: pan-y;
 }
@@ -890,7 +890,7 @@ h1, h2, h3, h4, h5, h6, .font-serif-display {
   .cup-svg { width: 118px; right: -12px; bottom: -26px; }
   .cookie.c1 { width: 50px; }
   .cookie.c2 { width: 40px; left: 34px; }
-  .mock-scene { height: 350px; }
+  .mock-scene { height: auto; }
 }
 
 /* ---------- Prova Social Toast (.social-proof) ---------- */

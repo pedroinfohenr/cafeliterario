@@ -100,8 +100,7 @@
           window.location.hostname.includes('run.app') ||
           window.location.search.includes('preview=true');
 
-        if (isPreviewOrDev) {
-          console.log("[RedirectGate] Ambiente de edição detectado (" + window.location.hostname + "). Redirecionamento desktop pausado aqui para você editar.");
+        if (isPreviewOrDev || window.location.href.startsWith(DESKTOP_REDIRECT_URL) || window.location.hostname.includes('cafezinholiterario')) {
           return;
         }
 
