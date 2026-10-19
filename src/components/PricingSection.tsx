@@ -13,7 +13,6 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectPackage 
   });
 
   const sectionRef = useRef<HTMLElement>(null);
-  const dunkRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -31,22 +30,20 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectPackage 
   const today = new Date();
   const dateFormatted = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}`;
 
-  // Efeito de explosão de grãos de café ao rolar até a oferta
+  // Efeito suave ao rolar até a oferta
   useEffect(() => {
     const offer = sectionRef.current;
-    const dunk = dunkRef.current;
-    if (!offer || !dunk) return;
+    if (!offer) return;
 
     let fired = false;
     const handleScroll = () => {
       if (fired) return;
-      const rect = dunk.getBoundingClientRect();
+      const rect = offer.getBoundingClientRect();
       if (rect.top < window.innerHeight * 0.8 && rect.bottom > 0) {
         fired = true;
         const offerRect = offer.getBoundingClientRect();
-        const dunkRect = dunk.getBoundingClientRect();
-        const cx = dunkRect.left - offerRect.left + dunkRect.width / 2;
-        const cy = dunkRect.top - offerRect.top + dunkRect.height * 0.45;
+        const cx = offerRect.width / 2;
+        const cy = 40;
 
         const beans: {
           el: HTMLElement;
@@ -102,23 +99,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectPackage 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Respingos de leite nos botões
-  const handleBtnClick = (e: React.MouseEvent<HTMLButtonElement>, pkg: 'basico' | 'completo') => {
-    for (let i = 0; i < 10; i++) {
-      const drop = document.createElement('span');
-      drop.className = 'milk-drop';
-      const a = Math.random() * Math.PI * 2;
-      const dist = 30 + Math.random() * 50;
-      drop.style.left = `${e.clientX - 5}px`;
-      drop.style.top = `${e.clientY - 5}px`;
-      drop.style.setProperty('--dx', `${Math.cos(a) * dist}px`);
-      drop.style.setProperty('--dy', `${Math.sin(a) * dist - 20}px`);
-      const sz = 5 + Math.random() * 8;
-      drop.style.width = `${sz}px`;
-      drop.style.height = `${sz}px`;
-      document.body.appendChild(drop);
-      setTimeout(() => drop.remove(), 750);
-    }
+  const handleBtnClick = (_e: React.MouseEvent<HTMLButtonElement>, pkg: 'basico' | 'completo') => {
     onSelectPackage(pkg);
   };
 
@@ -131,34 +112,6 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectPackage 
       <div className="max-w-4xl mx-auto relative z-10">
         {/* Animated Dipping Biscuit into Steaming Coffee */}
         <div className="text-center mb-2">
-          <svg
-            ref={dunkRef}
-            className="dunk"
-            viewBox="0 0 140 130"
-            aria-hidden="true"
-          >
-            <g className="steam" fill="none" stroke="#FFF8EC" strokeWidth="4" strokeLinecap="round" opacity=".8">
-              <path d="M52 52 C44 42 60 34 52 22" />
-              <path d="M88 52 C80 42 96 34 88 22" />
-            </g>
-            <g className="biscuit">
-              <rect x="58" y="-4" width="24" height="64" rx="5" fill="#EBC284" />
-              <g fill="#C98A45">
-                <circle cx="66" cy="8" r="2" />
-                <circle cx="74" cy="18" r="2" />
-                <circle cx="66" cy="28" r="2" />
-                <circle cx="74" cy="38" r="2" />
-              </g>
-              <rect className="wet" x="58" y="34" width="24" height="26" rx="5" fill="#7A4424" />
-            </g>
-            <ellipse cx="70" cy="122" rx="62" ry="8" fill="rgba(0,0,0,.35)" />
-            <path d="M116 78 C140 76 140 108 112 106" fill="none" stroke="#FFF8EC" strokeWidth="9" strokeLinecap="round" />
-            <path d="M26 64 C27 100 42 118 70 118 C98 118 113 100 114 64 Z" fill="#FFF8EC" />
-            <path d="M32 90 C40 108 52 113 70 114" fill="none" stroke="#B8352B" strokeWidth="3" opacity=".6" />
-            <ellipse cx="70" cy="64" rx="44" ry="9" fill="#F0E4CF" />
-            <ellipse cx="70" cy="66" rx="39" ry="7" fill="#3A2114" />
-            <ellipse className="ripple" cx="70" cy="66" rx="14" ry="3" fill="none" stroke="#C98E5A" strokeWidth="2" />
-          </svg>
 
           {/* Title (Creme Vintage) */}
           <h2 className="font-serif-display text-2xl sm:text-4xl font-black text-[#FFF0D1] leading-tight mb-2">
@@ -234,7 +187,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectPackage 
 
             <button
               onClick={(e) => handleBtnClick(e, 'basico')}
-              className="btn btn-milk w-full font-bold uppercase tracking-wide cursor-pointer"
+              className="w-full bg-[#3D2014] hover:bg-[#4A2819] text-[#FFF0D1] font-bold text-sm sm:text-base py-3.5 px-6 rounded-2xl border border-[#C99A45]/40 shadow-sm transition-all cursor-pointer active:scale-[0.98]"
             >
               QUERO O BÁSICO
             </button>
@@ -315,7 +268,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectPackage 
 
             <button
               onClick={(e) => handleBtnClick(e, 'completo')}
-              className="btn btn-primary w-full animate-pulse shadow-[0_7px_0_#8F6822] cursor-pointer"
+              className="w-full bg-gradient-to-r from-[#D4A348] via-[#F3D99A] to-[#C99A45] hover:from-[#E2B35B] hover:to-[#D4A348] text-[#1E0F0A] font-serif-display font-black text-lg sm:text-xl py-4.5 px-6 rounded-2xl shadow-[0_10px_24px_rgba(201,154,69,0.35)] hover:shadow-[0_14px_30px_rgba(201,154,69,0.5)] transition-all cursor-pointer border-t border-white/60 active:scale-[0.98]"
             >
               QUERO O COMPLETO
             </button>

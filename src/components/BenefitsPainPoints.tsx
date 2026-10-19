@@ -60,11 +60,11 @@ export const BenefitsPainPoints: React.FC<BenefitsPainPointsProps> = ({ onCtaCli
           Agora você abre o roteiro, imprime as peças e o seu Café Literário já tem cara de evento.
         </p>
 
-        {/* Botão Creme */}
+        {/* Botão Sofisticado */}
         <div className="text-center">
           <button
             onClick={onCtaClick}
-            className="btn btn-milk text-base sm:text-lg font-black py-4 px-8 shadow-[0_7px_0_#C9B08A] uppercase tracking-wide cursor-pointer"
+            className="inline-flex items-center justify-center bg-[#2B160F] hover:bg-[#3D2014] text-[#FFF0D1] text-base sm:text-lg font-black py-4.5 px-9 rounded-2xl shadow-[0_8px_20px_rgba(43,22,15,0.25)] hover:shadow-[0_12px_28px_rgba(43,22,15,0.35)] transition-all cursor-pointer border border-[#C99A45]/40 hover:scale-[1.02] active:scale-[0.98] uppercase tracking-wide"
           >
             QUERO FACILITAR MEU CAFÉ LITERÁRIO
           </button>

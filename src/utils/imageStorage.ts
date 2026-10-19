@@ -4,8 +4,13 @@
 export function getSiteImage(key: string, defaultSrc: string): string {
   if (typeof window !== 'undefined') {
     try {
-      const saved = localStorage.getItem(`site_img_${key}`);
-      if (saved) return saved;
+      // Limpa qualquer dado residual ou chave antiga de webp no navegador do usuário
+      Object.keys(localStorage).forEach((k) => {
+        const val = localStorage.getItem(k);
+        if (k.includes('webp') || (val && val.includes('.webp'))) {
+          localStorage.removeItem(k);
+        }
+      });
     } catch {}
   }
   return defaultSrc;

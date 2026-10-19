@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { HeaderUrgency } from './components/HeaderUrgency';
 import { Hero } from './components/Hero';
 import { BenefitsPainPoints } from './components/BenefitsPainPoints';
 import { TimelineSteps } from './components/TimelineSteps';
-import { MaterialsShowcase } from './components/MaterialsShowcase';
 import { AudienceGarantias } from './components/AudienceGarantias';
 import { BonusesSection } from './components/BonusesSection';
 import { PricingSection } from './components/PricingSection';
 import { HowItWorksTestimonials } from './components/HowItWorksTestimonials';
 import { FAQSection } from './components/FAQSection';
-import { Footer } from './components/Footer';
 import { UpsellModal } from './components/UpsellModal';
 import { SectionCurtainDivider } from './components/SectionCurtainDivider';
 import { SocialProofToast } from './components/SocialProofToast';
@@ -97,9 +94,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#2B160F] text-[#FFF0D1] selection:bg-[#C99A45] selection:text-[#21140F]">
-      {/* 1. Barra de Urgência com Cronômetro */}
-      <HeaderUrgency />
-
       {/* Notificação Popup de Prova Social */}
       <SocialProofToast />
 
@@ -119,20 +113,14 @@ export default function App() {
           <TimelineSteps />
         </div>
 
-        {/* Onda de café fluida entrando em Peças (bg #F5E6CC) com a cor da Linha do Tempo #FFF0D1 */}
+        {/* Turmas e Garantias (bg #FFF0D1) */}
+        <AudienceGarantias />
+
+        {/* 7. 4 Bônus Exclusivos (bg #4A2819) com transição fluida do creme #FFF0D1 */}
         <div className="relative">
           <SectionCurtainDivider color="#FFF0D1" />
-          <MaterialsShowcase />
+          <BonusesSection />
         </div>
-
-        {/* Onda de café fluida entrando em Turmas (bg #FFF0D1) com a cor de Peças #F5E6CC */}
-        <div className="relative">
-          <SectionCurtainDivider color="#F5E6CC" />
-          <AudienceGarantias />
-        </div>
-
-        {/* 7. 4 Bônus Exclusivos (bg #4A2819) com as 4 imagens originais do usuário */}
-        <BonusesSection />
 
         {/* Onda de café fluida entrando na Oferta (bg #2B160F) com a cor dos Bônus #4A2819 */}
         <div className="relative">
@@ -160,9 +148,6 @@ export default function App() {
           <FAQSection />
         </div>
       </main>
-
-      {/* 11. Rodapé Oficial */}
-      <Footer />
 
       {/* Pop-up Irresistível de Upsell (Completo por R$ 15,90 ao clicar no Básico) */}
       <UpsellModal
