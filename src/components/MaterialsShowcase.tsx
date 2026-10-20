@@ -1,4 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getSiteImage } from '../utils/imageStorage';
+
+// Importação direta dos PNGs oficiais das peças para bundling estático no Vite/Netlify
+import img01_convite from '../imagens/01_convite.png';
+import img02_cardapio from '../imagens/02_cardapio.png';
+import img03_crachas from '../imagens/03_crachas.png';
+import img04_certificado from '../imagens/04_certificado.png';
+import img05_plaquinhas from '../imagens/05_plaquinhas.png';
+import img06_marcapaginas from '../imagens/06_marcapaginas.png';
+import img07_painel from '../imagens/07_painel.png';
+import img08_bandeirolas from '../imagens/08_bandeirolas.png';
+import img09_adesivos from '../imagens/09_adesivos.png';
+import img10_mesa from '../imagens/10_mesa.png';
+import img11_moldura from '../imagens/11_moldura.png';
 
 interface PieceItem {
   id: string;
@@ -12,37 +26,37 @@ const PEÇAS_LIST: PieceItem[] = [
     id: '01_convite',
     tag: '#01',
     title: 'Convite Personalizado',
-    image: '/imagens/01_convite.png',
+    image: img01_convite,
   },
   {
     id: '02_cardapio',
     tag: '#02',
     title: 'Cardápio Literário de Mesa',
-    image: '/imagens/02_cardapio.png',
+    image: img02_cardapio,
   },
   {
     id: '03_crachas',
     tag: '#03',
     title: 'Crachás de Escritores & Leitores',
-    image: '/imagens/03_crachas.png',
+    image: img03_crachas,
   },
   {
     id: '04_certificado',
     tag: '#04',
     title: 'Certificado de Participação',
-    image: '/imagens/04_certificado.png',
+    image: img04_certificado,
   },
   {
     id: '05_plaquinhas',
     tag: '#05',
     title: 'Plaquinhas das Mesas dos Autores',
-    image: '/imagens/05_plaquinhas.png',
+    image: img05_plaquinhas,
   },
   {
     id: '06_marcapaginas',
     tag: '#06',
     title: 'Marca-páginas de Lembrança',
-    image: '/imagens/06_marcapaginas.png',
+    image: img06_marcapaginas,
   },
 ];
 
@@ -51,31 +65,31 @@ const DECOR_LIST: PieceItem[] = [
     id: '07_painel',
     tag: '#07',
     title: 'Painel de Boas-Vindas',
-    image: '/imagens/07_painel.png',
+    image: img07_painel,
   },
   {
     id: '08_bandeirolas',
     tag: '#08',
     title: 'Bandeirolas com Versos Célebres',
-    image: '/imagens/08_bandeirolas.png',
+    image: img08_bandeirolas,
   },
   {
     id: '09_adesivos',
     tag: '#09',
     title: 'Adesivos Literários para Cadernos',
-    image: '/imagens/09_adesivos.png',
+    image: img09_adesivos,
   },
   {
     id: '10_mesa',
     tag: '#10',
     title: 'Centros de Mesa e Bistrô',
-    image: '/imagens/10_mesa.png',
+    image: img10_mesa,
   },
   {
     id: '11_moldura',
     tag: '#11',
     title: 'Moldura para Fotos do Evento',
-    image: '/imagens/11_moldura.png',
+    image: img11_moldura,
   },
 ];
 
@@ -134,6 +148,9 @@ const CoverflowDeck: React.FC<CoverflowDeckProps> = ({
             else if (diff === 1) posClass = 'pos-right';
             else if (diff === n - 1) posClass = 'pos-left';
 
+            // Resolução robusta: se o navegador do usuário tiver a foto no localStorage, usa ela; senão usa a imagem importada
+            const resolvedSrc = getSiteImage(item.id, item.image);
+
             return (
               <div
                 key={item.id}
@@ -142,13 +159,23 @@ const CoverflowDeck: React.FC<CoverflowDeckProps> = ({
                   if (!isCenter) onSelect(i);
                 }}
               >
-                {/* Visual Oficial da Peça com a Imagem Real do Usuário */}
+                {/* Visual Oficial da Peça com a Imagem Real */}
                 <div className="relative overflow-hidden rounded-2xl border-2 border-[#C99A45] bg-[#2B160F] shadow-[0_18px_30px_rgba(0,0,0,0.45)] h-[340px] sm:h-[370px] select-none p-2 flex items-center justify-center">
                   <img
-                    src={item.image}
+                    src={resolvedSrc}
                     alt={item.title}
                     className="w-full h-full object-contain rounded-xl shadow-inner transition-transform duration-300 group-hover:scale-[1.01]"
                     loading="eager"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      // Fallback seguro se alguma URL falhar: tenta localStorage ou caminho público direto
+                      const local = getSiteImage(item.id, '');
+                      if (local && target.src !== local) {
+                        target.src = local;
+                      } else if (!target.src.includes(`/imagens/${item.id}.png`)) {
+                        target.src = `/imagens/${item.id}.png`;
+                      }
+                    }}
                   />
 
                   {/* Badge do identificador da peça */}
@@ -192,6 +219,12 @@ const CoverflowDeck: React.FC<CoverflowDeckProps> = ({
 export const MaterialsShowcase: React.FC = () => {
   const [pieceIdx, setPieceIdx] = useState(0);
   const [decorIdx, setDecorIdx] = useState(0);
+
+  // Força re-render se o localStorage for hidratado no cliente
+  const [, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <section className="section s-latte bg-[#F5E6CC] py-16 px-4 relative overflow-hidden text-[#21140F]">
