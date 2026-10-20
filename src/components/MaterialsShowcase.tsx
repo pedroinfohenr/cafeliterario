@@ -1,18 +1,5 @@
 import React, { useState } from 'react';
 
-// Imagens reais oficiais carregadas pelo usuário na pasta src/imagens
-import img01_convite from '../imagens/01_convite.png';
-import img02_cardapio from '../imagens/02_cardapio.png';
-import img03_crachas from '../imagens/03_crachas.png';
-import img04_certificado from '../imagens/04_certificado.png';
-import img05_plaquinhas from '../imagens/05_plaquinhas.png';
-import img06_marcapaginas from '../imagens/06_marcapaginas.png';
-import img07_painel from '../imagens/07_painel.png';
-import img08_bandeirolas from '../imagens/08_bandeirolas.png';
-import img09_adesivos from '../imagens/09_adesivos.png';
-import img10_mesa from '../imagens/10_mesa.png';
-import img11_moldura from '../imagens/11_moldura.png';
-
 interface PieceItem {
   id: string;
   tag: string;
@@ -25,37 +12,37 @@ const PEÇAS_LIST: PieceItem[] = [
     id: '01_convite',
     tag: '#01',
     title: 'Convite Personalizado',
-    image: img01_convite,
+    image: '/imagens/01_convite.png',
   },
   {
     id: '02_cardapio',
     tag: '#02',
     title: 'Cardápio Literário de Mesa',
-    image: img02_cardapio,
+    image: '/imagens/02_cardapio.png',
   },
   {
     id: '03_crachas',
     tag: '#03',
     title: 'Crachás de Escritores & Leitores',
-    image: img03_crachas,
+    image: '/imagens/03_crachas.png',
   },
   {
     id: '04_certificado',
     tag: '#04',
     title: 'Certificado de Participação',
-    image: img04_certificado,
+    image: '/imagens/04_certificado.png',
   },
   {
     id: '05_plaquinhas',
     tag: '#05',
     title: 'Plaquinhas das Mesas dos Autores',
-    image: img05_plaquinhas,
+    image: '/imagens/05_plaquinhas.png',
   },
   {
     id: '06_marcapaginas',
     tag: '#06',
     title: 'Marca-páginas de Lembrança',
-    image: img06_marcapaginas,
+    image: '/imagens/06_marcapaginas.png',
   },
 ];
 
@@ -64,31 +51,31 @@ const DECOR_LIST: PieceItem[] = [
     id: '07_painel',
     tag: '#07',
     title: 'Painel de Boas-Vindas',
-    image: img07_painel,
+    image: '/imagens/07_painel.png',
   },
   {
     id: '08_bandeirolas',
     tag: '#08',
     title: 'Bandeirolas com Versos Célebres',
-    image: img08_bandeirolas,
+    image: '/imagens/08_bandeirolas.png',
   },
   {
     id: '09_adesivos',
     tag: '#09',
     title: 'Adesivos Literários para Cadernos',
-    image: img09_adesivos,
+    image: '/imagens/09_adesivos.png',
   },
   {
     id: '10_mesa',
     tag: '#10',
     title: 'Centros de Mesa e Bistrô',
-    image: img10_mesa,
+    image: '/imagens/10_mesa.png',
   },
   {
     id: '11_moldura',
     tag: '#11',
     title: 'Moldura para Fotos do Evento',
-    image: img11_moldura,
+    image: '/imagens/11_moldura.png',
   },
 ];
 

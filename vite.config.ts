@@ -29,15 +29,15 @@ function imageUploadPlugin(): Plugin {
                 fileBuffer = Buffer.from(base64Data, 'base64');
               }
 
-              const targetSrc = path.resolve(__dirname, 'src/imagens', filename);
-              const targetPub = path.resolve(__dirname, 'public/imagens', filename);
+              const targetSrc = path.resolve(import.meta.dirname, 'src/imagens', filename);
+              const targetPub = path.resolve(import.meta.dirname, 'public/imagens', filename);
               fs.mkdirSync(path.dirname(targetSrc), { recursive: true });
               fs.mkdirSync(path.dirname(targetPub), { recursive: true });
               fs.writeFileSync(targetSrc, fileBuffer);
               fs.writeFileSync(targetPub, fileBuffer);
 
               if (filename === 'hero.png') {
-                fs.writeFileSync(path.resolve(__dirname, 'public', filename), fileBuffer);
+                fs.writeFileSync(path.resolve(import.meta.dirname, 'public', filename), fileBuffer);
               }
 
               res.statusCode = 200;
@@ -62,7 +62,7 @@ export default defineConfig(() => {
     plugins: [react(), tailwindcss(), imageUploadPlugin()],
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, '.'),
+        '@': path.resolve(import.meta.dirname, '.'),
       },
     },
     server: {

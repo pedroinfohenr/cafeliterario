@@ -1,12 +1,11 @@
-# Pasta de Imagens dos Depoimentos (src/imagens)
+# Pasta de Imagens Públicas (public/imagens)
 
-Coloque aqui os arquivos de imagem dos depoimentos/prints do WhatsApp (formatos suportados: `.png`, `.jpg`, `.jpeg`, `.webp`, `.svg`).
+Coloque aqui os arquivos de imagem que você desejar acessar diretamente pela URL `/imagens/nome-do-arquivo.png`.
 
-Exemplos de nomes:
+Exemplos:
 - `depoimento1.png`
 - `depoimento2.png`
 - `depoimento3.png`
 - `depoimento4.png`
 
-O carrossel da página carrega automaticamente todas as imagens adicionadas nesta pasta!
-Você também pode colocar imagens na pasta `public/imagens/` ou carregar diretamente pelo botão no carrossel.
+O carrossel da página também consegue carregar as imagens colocadas nesta pasta.
