@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { HeaderUrgency } from './components/HeaderUrgency';
 import { Hero } from './components/Hero';
 import { BenefitsPainPoints } from './components/BenefitsPainPoints';
 import { TimelineSteps } from './components/TimelineSteps';
+import { MaterialsShowcase } from './components/MaterialsShowcase';
 import { AudienceGarantias } from './components/AudienceGarantias';
 import { BonusesSection } from './components/BonusesSection';
 import { PricingSection } from './components/PricingSection';
@@ -94,6 +96,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#2B160F] text-[#FFF0D1] selection:bg-[#C99A45] selection:text-[#21140F]">
+      {/* Faixa de Urgência no topo com emoji de café */}
+      <HeaderUrgency />
+
       {/* Notificação Popup de Prova Social */}
       <SocialProofToast />
 
@@ -113,8 +118,17 @@ export default function App() {
           <TimelineSteps />
         </div>
 
+        {/* Onda de café fluida entrando em Peças do seu Café Literário (bg #F5E6CC) */}
+        <div className="relative">
+          <SectionCurtainDivider color="#FFF0D1" />
+          <MaterialsShowcase />
+        </div>
+
         {/* Turmas e Garantias (bg #FFF0D1) */}
-        <AudienceGarantias />
+        <div className="relative">
+          <SectionCurtainDivider color="#F5E6CC" />
+          <AudienceGarantias />
+        </div>
 
         {/* 7. 4 Bônus Exclusivos (bg #4A2819) com transição fluida do creme #FFF0D1 */}
         <div className="relative">

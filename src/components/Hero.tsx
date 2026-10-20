@@ -72,32 +72,16 @@ export const Hero: React.FC<HeroProps> = ({ onCtaClick }) => {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 relative z-10 pt-8 pb-14">
-        {/* Selo Kicker elegante */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#351C13]/90 border border-[#C99A45]/40 text-[#EAC988] text-xs sm:text-sm font-semibold tracking-wide mb-4 shadow-sm backdrop-blur-xs">
-          <Feather className="w-4 h-4 text-[#C99A45]" />
+        {/* Kicker script com a mesma fonte artesanal do mock-tag (Caveat / font-script) */}
+        <p className="font-script hand text-2xl sm:text-3xl text-[#C99A45] mb-3 font-bold flex items-center justify-center gap-2.5">
+          <Feather className="w-5 h-5 text-[#C99A45]" />
           <span>Para professores de Língua Portuguesa e Literatura</span>
-        </div>
-
-        {/* Título Principal com destaque */}
-        <h1 className="font-serif-display text-3xl sm:text-5xl lg:text-6xl font-black text-[#FFF0D1] max-w-3xl mx-auto mb-5 leading-[1.12]">
-          {headlineWords.map((word, i) => (
-            <span
-              key={i}
-              className={`mr-2 sm:mr-3 inline-block ${
-                word === 'última' || word === 'poesia' 
-                  ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#F0D59A] via-[#C99A45] to-[#E5BE72]' 
-                  : ''
-              }`}
-            >
-              {word}
-            </span>
-          ))}
-        </h1>
-
-        {/* Subtítulo oficial */}
-        <p className="text-base sm:text-lg text-[#F0D9AE]/95 max-w-2xl mx-auto mb-6 leading-relaxed font-normal">
-          Roteiro passo a passo, peças para imprimir e decoração completa para montar um Café Literário que a escola inteira vai aplaudir de pé, sem passar madrugadas planejando do zero.
         </p>
+
+        {/* Título Principal sem dourado em 'última poesia' */}
+        <h1 className="font-serif-display text-3xl sm:text-5xl lg:text-6xl font-black text-[#FFF0D1] max-w-3xl mx-auto mb-5 leading-[1.12]">
+          Seu Café Literário pronto, do sarau de abertura à última poesia
+        </h1>
 
         {/* Chips de Destaque com design refinado */}
         <div className="flex flex-wrap items-center justify-center gap-2.5 mb-9">
@@ -116,7 +100,7 @@ export const Hero: React.FC<HeroProps> = ({ onCtaClick }) => {
         </div>
 
         {/* 3D Mockup Scene ampliada com destaque total */}
-        <div ref={sceneRef} className="mock-scene max-w-2xl sm:max-w-3xl mx-auto mb-8" id="mockScene">
+        <div ref={sceneRef} className="mock-scene max-w-2xl sm:max-w-3xl mx-auto mb-6" id="mockScene">
           <div className="mock-glow" aria-hidden="true" />
 
           {/* Mockup Stack */}
@@ -143,18 +127,22 @@ export const Hero: React.FC<HeroProps> = ({ onCtaClick }) => {
           </span>
         </div>
 
-        {/* Botão de Ação Principal com visual sofisticado */}
+        {/* Subtítulo oficial posicionado embaixo da imagem do Hero */}
+        <p className="text-base sm:text-lg text-[#F0D9AE]/95 max-w-2xl mx-auto mb-8 leading-relaxed font-normal">
+          Roteiro passo a passo, peças para imprimir e decoração completa para montar um Café Literário que a escola inteira vai aplaudir de pé, sem passar madrugadas planejando do zero.
+        </p>
+
+        {/* Botão de Ação Principal: Verde com Brilho, sem pulsação, fonte Montserrat */}
         <div className="flex flex-col items-center gap-3">
           <button
             onClick={onCtaClick}
-            className="group relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-[#D4A348] via-[#F3D99A] to-[#C99A45] hover:from-[#E2B35B] hover:to-[#D4A348] text-[#1E0F0A] font-serif-display font-black text-base sm:text-lg py-5 px-10 rounded-2xl shadow-[0_12px_28px_rgba(201,154,69,0.35)] hover:shadow-[0_16px_36px_rgba(201,154,69,0.5)] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer border-t border-white/60"
+            className="group relative inline-flex items-center justify-center bg-[#16A34A] hover:bg-[#15803D] text-white font-montserrat font-black text-base sm:text-lg py-5 px-8 sm:px-12 rounded-2xl shadow-[0_0_35px_rgba(34,197,94,0.65)] hover:shadow-[0_0_50px_rgba(34,197,94,0.9)] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer border-t-2 border-emerald-300/60 tracking-wider"
           >
-            <Sparkles className="w-5 h-5 text-[#692E24] animate-pulse" />
             <span>QUERO MEU CAFÉ LITERÁRIO PRONTO</span>
           </button>
           
           <div className="inline-flex items-center gap-1.5 text-xs text-[#F0D9AE]/85">
-            <ShieldCheck className="w-4 h-4 text-[#C99A45]" />
+            <ShieldCheck className="w-4 h-4 text-[#22C55E]" />
             <span>Compra 100% segura · Acesso imediato no seu e-mail</span>
           </div>
         </div>

@@ -268,9 +268,9 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectPackage 
 
             <button
               onClick={(e) => handleBtnClick(e, 'completo')}
-              className="w-full bg-gradient-to-r from-[#D4A348] via-[#F3D99A] to-[#C99A45] hover:from-[#E2B35B] hover:to-[#D4A348] text-[#1E0F0A] font-serif-display font-black text-lg sm:text-xl py-4.5 px-6 rounded-2xl shadow-[0_10px_24px_rgba(201,154,69,0.35)] hover:shadow-[0_14px_30px_rgba(201,154,69,0.5)] transition-all cursor-pointer border-t border-white/60 active:scale-[0.98]"
+              className="w-full group relative inline-flex items-center justify-center bg-[#16A34A] hover:bg-[#15803D] text-white font-montserrat font-black text-base sm:text-lg py-5 px-6 rounded-2xl shadow-[0_0_35px_rgba(34,197,94,0.65)] hover:shadow-[0_0_50px_rgba(34,197,94,0.9)] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer border-t-2 border-emerald-300/60 tracking-wider"
             >
-              QUERO O COMPLETO
+              QUERO O PACOTE COMPLETO
             </button>
           </div>
         </div>

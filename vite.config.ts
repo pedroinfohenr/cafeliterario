@@ -11,9 +11,11 @@ function imageUploadPlugin(): Plugin {
       server.middlewares.use('/api/upload-image', (req, res) => {
         if (req.method === 'POST') {
           const rawFilename = req.headers['x-filename'];
-          const filename = rawFilename 
-            ? decodeURIComponent(rawFilename as string) 
-            : `image_${Date.now()}.png`;
+          const filename = (
+            rawFilename 
+              ? decodeURIComponent(rawFilename as string) 
+              : `image_${Date.now()}.png`
+          ).replace(/\.webp$/i, '.png');
 
           const chunks: Buffer[] = [];
           req.on('data', (chunk) => chunks.push(chunk));

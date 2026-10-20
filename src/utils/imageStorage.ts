@@ -1,19 +1,35 @@
 // Central image storage & upload utility for site-wide editable images
 // Supports LocalStorage persistence, server-side persistence (/api/upload-image), and clipboard/drag-drop
 
-export function getSiteImage(key: string, defaultSrc: string): string {
+export function getSiteImage(key: string, defaultSrc: string = ''): string {
   if (typeof window !== 'undefined') {
     try {
-      // Limpa qualquer dado residual ou chave antiga de webp no navegador do usuário
-      Object.keys(localStorage).forEach((k) => {
+      const keys = [`site_img_${key}`, `amostra_${key}`, `peca_${key}`, key];
+      for (const k of keys) {
         const val = localStorage.getItem(k);
-        if (k.includes('webp') || (val && val.includes('.webp'))) {
-          localStorage.removeItem(k);
+        if (val && val.length > 50) {
+          return val;
         }
-      });
+      }
     } catch {}
   }
   return defaultSrc;
+}
+
+export function removeSiteImage(key: string) {
+  if (typeof window !== 'undefined') {
+    try {
+      localStorage.removeItem(`site_img_${key}`);
+      localStorage.removeItem(`amostra_${key}`);
+      localStorage.removeItem(`bonus_${key}`);
+      localStorage.removeItem(`depoimento_${key}`);
+    } catch {}
+    window.dispatchEvent(
+      new CustomEvent('site-image-updated', {
+        detail: { key, removed: true },
+      })
+    );
+  }
 }
 
 export function saveSiteImage(key: string, filename: string, dataUrl: string) {

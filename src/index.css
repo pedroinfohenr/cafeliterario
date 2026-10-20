@@ -68,6 +68,10 @@ h1, h2, h3, h4, h5, h6, .font-serif-display {
   font-weight: 700 !important;
 }
 
+.font-montserrat {
+  font-family: 'Montserrat', sans-serif !important;
+}
+
 /* ---------- Botões com Alta Conversão e Paleta Dourada / Vinho ---------- */
 .btn {
   display: inline-flex;
